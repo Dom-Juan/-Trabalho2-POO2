@@ -1,8 +1,6 @@
 import PySimpleGUI as sg
 import sys
 
-# import de classes
-sys.path.append('../')
 
 # Mensagem de sucesso
 def result_window(text) -> None:
@@ -18,15 +16,19 @@ def result_window(text) -> None:
   window.close()
 
 # Mostrar Objetos
+
+
 # Função helper para printa as info dos obj.
 def print_info(obj_type, obj_array):
   for obj in obj_array[:]:
     if type(obj) == obj_type:
       obj.print_obj()
   pass
+
+
 # Monstrando os Clientes
-def show_clients_view(user_controller)->None:
-  user_list = user_controller.get_all_clients()
+def show_clients_view(user_controller):
+  user_list: list = user_controller.get_all_clients()
   print(user_list)
   layout = []
   Col = []
@@ -86,7 +88,7 @@ def show_clients_view(user_controller)->None:
       Col.append(
         [
           sg.Text('Cliente de Ouro:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.golden_client), pad=(5, 5), size=(45, 1))
+          sg.Text(str(client.gold_client), pad=(5, 5), size=(45, 1))
         ]
       )
       Col.append(
@@ -97,7 +99,7 @@ def show_clients_view(user_controller)->None:
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os Clientes", layout, element_justification='c', resizable=True, finalize=True,
                       modal=True)
@@ -107,9 +109,11 @@ def show_clients_view(user_controller)->None:
     if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
       break
   window.close()
+
+
 # Monstrando os Gerentes.
-def show_managers_view(user_controller)->None:
-  manager_list = user_controller.get_all_clients()
+def show_managers_view(user_controller):
+  manager_list: list = user_controller.get_all_managers()
   print(manager_list)
   layout = []
   Col = []
@@ -186,7 +190,7 @@ def show_managers_view(user_controller)->None:
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os Gerentes", layout, element_justification='c', resizable=True, finalize=True,
                       modal=True)
@@ -196,4 +200,7 @@ def show_managers_view(user_controller)->None:
     if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
       break
   window.close()
+
+
+
 # FIM Mostrar Objetos

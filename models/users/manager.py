@@ -1,8 +1,7 @@
 import datetime
-import PySimpleGUI as sg
 
 
-from user import User
+from models.users.user import User
 
 class Manager(User):
   def __init__(self, **kwargs):

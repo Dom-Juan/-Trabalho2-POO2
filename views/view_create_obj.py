@@ -113,4 +113,17 @@ def create_manager_view(user_controller:object):
           pis=values[8],
         )
       window.close()
+
+
+# Criar Cartão de crédito
+def create_payment_money_view(payment_controller):
+  pass
+
+
+def create_payment_pix_view(payment_controller):
+  pass
+
+
+def create_payment_credit_card_view(payment_controller):
+  pass
 # FIM DA LÓGICA DE CRIAÇÃO DE OBJETOS.

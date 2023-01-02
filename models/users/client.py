@@ -1,8 +1,7 @@
 import datetime
-import PySimpleGUI as sg
 
+from models.users.user import User
 
-from user import User
 
 class Client(User):
   def __init__(self, **kwargs):

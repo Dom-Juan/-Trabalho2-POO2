@@ -1,23 +1,25 @@
 import sys
+from models.users.client import Client
+from models.users.manager import Manager
 
 sys.path.append('..//..')
 
 print(sys.path)
 
-from models.users.client import Client
-from models.users.manager import Manager
+# ??????????
 
 class UserController(object):
   def __init__(self, **kwargs):
     """
     Purpose: value
     """
-    self._client_list:list = kwargs.get('client_list')
-    self._manager_list:list = kwargs.get('manager_list')
+    self._client_list: list = kwargs.get('client_list')
+    self._manager_list: list = kwargs.get('manager_list')
     # end alternate constructor
+
   # Clientes.
-  def new_user_client(self, name:str, cpf:str, rg:str, anniversary_date:any,
-    address:str, cep:str, email:str, gold_client:str):
+  def new_user_client(self, name: str, cpf: str, rg: str, anniversary_date: any,
+                      address: str, cep: str, email: str, gold_client: bool):
     """
     Purpose: Create a new user client
     """
@@ -28,8 +30,9 @@ class UserController(object):
         break
     if gold_client:
       gold_client = True
-    else: gold_client = False
-    c:object = Client(
+    else:
+      gold_client = False
+    client: object = Client(
       name=name,
       cpf=cpf,
       rg=rg,
@@ -38,17 +41,18 @@ class UserController(object):
       cep=cep,
       email=email,
       gold_client=gold_client
-      )
-    self._client_list.add(c)
-    return c
+    )
+    self._client_list.append(client)
+    return client
 
   def get_all_clients(self):
     return self._client_list
+
   # FIM Clientes.
 
   # Gerentes.
-  def new_user_manager(self, name:str, cpf:str, rg:str, anniversary_date:any,
-    address:str, cep:str, email:str, wage:float, pis:str):
+  def new_user_manager(self, name: str, cpf: str, rg: str, anniversary_date: any,
+                       address: str, cep: str, email: str, wage: float, pis: str):
     """
     Purpose: Create a new user client
     """
@@ -57,7 +61,7 @@ class UserController(object):
         return False
       else:
         break
-    m:object = Manager(
+    manager: object = Manager(
       name=name,
       cpf=cpf,
       rg=rg,
@@ -67,17 +71,19 @@ class UserController(object):
       email=email,
       wage=wage,
       pis=pis
-      )
-    self._manager_list.add(m)
-    return m
+    )
+    self._manager_list.append(manager)
+    return manager
 
   def get_all_managers(self):
     return self._manager_list
   # Fim Gerentes.
+
+
 if __name__ == '__main__':
   print("DEBUG: UserController")
   control = UserController()
-  c:object = control.new_user_client(
+  c: object = control.new_user_client(
     name="Client",
     cpf="484.154.465-41",
     rg="34.132.123-1",
@@ -86,8 +92,8 @@ if __name__ == '__main__':
     cep="12304-34",
     email="a@email.com",
     gold_client=False
-    )
-  m:object = control.new_user_manager(
+  )
+  m: object = control.new_user_manager(
     name="Client",
     cpf="484.154.465-41",
     rg="34.132.123-1",
@@ -97,6 +103,6 @@ if __name__ == '__main__':
     email="a@email.com",
     wage=5534.23,
     pis="ASDASFASF"
-    )
+  )
   c.print_obj()
   m.print_obj()

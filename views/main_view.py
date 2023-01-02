@@ -12,9 +12,10 @@ from controller.user_controller import UserController
 
 # Views
 # Criação de obj.
-from views.view_create_obj import create_client_view
+from views.view_create_obj import create_client_view, create_manager_view, create_payment_money_view, \
+  create_payment_pix_view, create_payment_credit_card_view
 # Mostrar os obj.
-from views.view_create_obj import show_clients_view
+from views.view_show_obj import show_clients_view, show_managers_view
 # Salvar estado do e-comerce.
 # Mensagem de sucesso
 
@@ -108,6 +109,15 @@ def main_window(name, e_comerce):
             ]
           ],
           [
+            '&Pagamento',
+            [
+              'Adicionar Pagamento por cartão',
+              'Adicionar Pagamento por dinheiro',
+              'Adicionar Pagamento por pix',
+              'Mostrar todos pagamentos',
+            ]
+          ],
+          [
             '&E-Comerce',
           [
             'Salvar Estado do programa'
@@ -136,10 +146,30 @@ def main_window(name, e_comerce):
     if event in [sg.WIN_CLOSE_ATTEMPTED_EVENT, 'Sair']:
       break
     if event in ['Criar Cliente']:
-      e_comerce.client_list = create_client_view(user_controller)
-      result_window('Operação feita com sucesso')
+      result = create_client_view(user_controller)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        e_comerce.client_list = result
+        result_window('Operação feita com sucesso')
     if event in ['Criar Gerente']:
-      e_comerce.client_list = create_manager_view(user_controller)
-      result_window('Operação feita com sucesso')
+      result = create_manager_view(user_controller)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        e_comerce.manager_list = result
+        result_window('Operação feita com sucesso')
+    if event in ['Adicionar Pagamento por cartão']:
+      pass
+    if event in ['Adicionar Pagamento por dinheiro']:
+      pass
+    if event in ['Adicionar Pagamento por pix']:
+      pass
+    # FIM CRIAR OBJETOS.
+    # INICIO MOSTRAR INFORMAÇÕES NA GUI.
+    if event in ['Mostrar todos Clientes']:
+      show_clients_view(user_controller)
+    if event in ['Mostrar todos Gerentes']:
+      show_managers_view(user_controller)
     # Lógica de criação dos objetos.
   window.close()
