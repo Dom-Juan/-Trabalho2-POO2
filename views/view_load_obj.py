@@ -1,11 +1,11 @@
+from pathlib import Path
+from os import path
 import PySimpleGUI as sg
 import sys
 import json
 
 # import de classes
 sys.path.append('../')
-from os import path
-from pathlib import Path
 
 
 # Mensagem de sucesso
@@ -14,7 +14,8 @@ def result_window(text) -> None:
         [sg.Text(text, key="new")],
         [sg.Button('Ok', pad=(5, 5), size=(20, 1))]
     ]
-    window = sg.Window("Alerta!", layout, size=(320, 120), element_justification='c', resizable=True, modal=True)
+    window = sg.Window("Alerta!", layout, size=(320, 120),
+                       element_justification='c', resizable=True, modal=True)
     while True:
         event, values = window.read(close=True)
         if event in ["Exit", sg.WIN_CLOSED, "Ok"]:
@@ -28,7 +29,8 @@ def load_file_gui_users():
     layout = [
         [
             sg.Input(key='-INPUT-'),
-            sg.FileBrowse(file_types=(("JSON Files", "*.json"), ("ALL Files", "*.*"))),
+            sg.FileBrowse(file_types=(
+                ("JSON Files", "*.json"), ("ALL Files", "*.*"))),
             sg.Button("Abrir"),
         ]
     ]
@@ -44,7 +46,7 @@ def load_file_gui_users():
                     with open(filename, encoding='utf-8') as fp:
                         listObj = json.load(fp)
                         print(listObj)
-                        #return create_user_from_file(listObj)
+                        # return create_user_from_file(listObj)
                 except Exception as e:
                     print("Erro:", e)
                     result_window('Erro no processo de carregar arquivo.')
@@ -54,7 +56,8 @@ def load_file_gui_property():
     layout = [
         [
             sg.Input(key='-INPUT-'),
-            sg.FileBrowse(file_types=(("JSON Files", "*.json"), ("ALL Files", "*.*"))),
+            sg.FileBrowse(file_types=(
+                ("JSON Files", "*.json"), ("ALL Files", "*.*"))),
             sg.Button("Abrir"),
         ]
     ]
@@ -80,7 +83,8 @@ def load_file_gui_insurance():
     layout = [
         [
             sg.Input(key='-INPUT-'),
-            sg.FileBrowse(file_types=(("JSON Files", "*.json"), ("ALL Files", "*.*"))),
+            sg.FileBrowse(file_types=(
+                ("JSON Files", "*.json"), ("ALL Files", "*.*"))),
             sg.Button("Abrir"),
         ]
     ]
@@ -106,7 +110,8 @@ def load_file_gui_payment():
     layout = [
         [
             sg.Input(key='-INPUT-'),
-            sg.FileBrowse(file_types=(("JSON Files", "*.json"), ("ALL Files", "*.*"))),
+            sg.FileBrowse(file_types=(
+                ("JSON Files", "*.json"), ("ALL Files", "*.*"))),
             sg.Button("Abrir"),
         ]
     ]
@@ -132,7 +137,8 @@ def load_file_gui_sales(user_list, property_list, payment_list):
     layout = [
         [
             sg.Input(key='-INPUT-'),
-            sg.FileBrowse(file_types=(("JSON Files", "*.json"), ("ALL Files", "*.*"))),
+            sg.FileBrowse(file_types=(
+                ("JSON Files", "*.json"), ("ALL Files", "*.*"))),
             sg.Button("Abrir"),
         ]
     ]
@@ -158,7 +164,8 @@ def load_file_gui_rent(user_list: list, property_list: list, payment_list: list,
     layout = [
         [
             sg.Input(key='-INPUT-'),
-            sg.FileBrowse(file_types=(("JSON Files", "*.json"), ("ALL Files", "*.*"))),
+            sg.FileBrowse(file_types=(
+                ("JSON Files", "*.json"), ("ALL Files", "*.*"))),
             sg.Button("Abrir"),
         ]
     ]
@@ -170,11 +177,11 @@ def load_file_gui_rent(user_list: list, property_list: list, payment_list: list,
         elif event == 'Abrir':
             filename = values['-INPUT-']
             if Path(filename).is_file():
-                #try:
-                    with open(filename, encoding='utf-8') as fp:
-                        listObj = json.load(fp)
-                        print(listObj)
-                    #    return create_rent_from_file(listObj, user_list, property_list, payment_list, insurance_list)
-                #except Exception as e:
-                    #result_window('Erro no processo de carregar arquivo.')
+                # try:
+                with open(filename, encoding='utf-8') as fp:
+                    listObj = json.load(fp)
+                    print(listObj)
+                #    return create_rent_from_file(listObj, user_list, property_list, payment_list, insurance_list)
+                # except Exception as e:
+                # result_window('Erro no processo de carregar arquivo.')
 # FIM Lógica de carregar arquivos
