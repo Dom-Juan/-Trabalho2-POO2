@@ -140,7 +140,7 @@ def create_product_view(product_controller, manufacturer_list):
   else:
     # Mostrando a GUI, outras funções podem serem chamada.
     while True:
-      event, values = window.read()
+      event, values = window.read(close=True)
       print(event)
       if event == sg.WIN_CLOSED or event == "Cancelar":
         break
@@ -227,7 +227,7 @@ def create_manufacturer_view(manufacturer_list)-> object:
   else:
     # Mostrando a GUI, outras funções podem serem chamada.
     while True:
-      event, values = window.read()
+      event, values = window.read(close=True)
       print(event)
       print(values)
       if event == sg.WIN_CLOSED or event == "Cancelar":
