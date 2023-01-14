@@ -95,10 +95,6 @@ def main_window(name, e_comerce):
             '&Produtos',
             [
               'Adicionar Produto',
-              'Adicionar Eletrônicos',
-              'Adicionar Eletrodomésticos',
-              'Adicionar Vestuário',
-              'Adicionar Móveis',
               'Mostrar todos os Produtos',
             ]
           ],
