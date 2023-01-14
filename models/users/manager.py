@@ -7,9 +7,9 @@ class Manager(User):
   def __init__(self, **kwargs):
     super(Manager, self).__init__(**kwargs)
     today = datetime.date.today()
-    self._register_date = today.strftime("%d/%m/%Y")  # Data de adimissão
-    self._wage:float = kwargs.get('wage')
-    self.pis:str = kwargs['pis']
+    self._register_date: str = today.strftime("%d/%m/%Y")  # Data de adimissão
+    self._wage: float = kwargs.get('wage')
+    self.pis: str = kwargs['pis']
     pass
   # end alternate constructor
   
@@ -18,16 +18,19 @@ class Manager(User):
     return self._register_date
 
   @register_date.setter
-  def register_date(self, value):
-    self._register_date = value
+  def register_date(self, value: str):
+    if value == (None or ''):
+      self._register_date: str = self._register_date
+    else:
+      self._register_date: str = datetime.datetime.strptime(value, '%d/%m/%Y').date().strftime('%d/%m/%Y')
     pass
-  
+
   @property
   def wage(self):
     return self._wage
 
   @wage.setter
-  def wage(self, value:float):
+  def wage(self, value: float):
     self._wage = value
     pass
   
@@ -36,7 +39,7 @@ class Manager(User):
     return self._pis
 
   @pis.setter
-  def pis(self, value:str):
+  def pis(self, value: str):
     self._pis = value
     pass
 

@@ -7,18 +7,21 @@ class Client(User):
   def __init__(self, **kwargs):
     super(Client, self).__init__(**kwargs)
     today = datetime.date.today()
-    self._register_date = today.strftime("%d/%m/%Y")
-    self._gold_client:bool = kwargs['gold_client']
+    self._register_date: str = today.strftime("%d/%m/%Y")
+    self._gold_client: bool = kwargs['gold_client']
     pass
   # end alternate constructor
-  
+
   @property
   def register_date(self):
     return self._register_date
 
   @register_date.setter
-  def register_date(self, value):
-    self._register_date = value
+  def register_date(self, value: str):
+    if value == (None or ''):
+      self._register_date: str = self._register_date
+    else:
+      self._register_date: str = datetime.datetime.strptime(value, '%d/%m/%Y').date().strftime('%d/%m/%Y')
     pass
   
   @property
@@ -26,7 +29,7 @@ class Client(User):
     return self._gold_client
 
   @gold_client.setter
-  def gold_client(self, value:int):
+  def gold_client(self, value: int):
     self._gold_client = value
     pass
 

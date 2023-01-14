@@ -12,65 +12,65 @@ class Manufacturer(object):
     self.__phone: str = kwargs.get('phone', '')
     self.__address: str = kwargs.get('address', '')
 
-    @property
-    def manufacturer_code(self):
-      return self.__manufacturer_code
+  @property
+  def manufacturer_code(self):
+    return self.__manufacturer_code
 
-    @manufacturer_code.setter
-    def manufacturer_code(self, value: int):
-      self.__manufacturer_code = value
-      pass
+  @manufacturer_code.setter
+  def manufacturer_code(self, value: int):
+    self.__manufacturer_code = value
+    pass
 
-    @property
-    def cnpj(self):
-      return self.__cnpj
+  @property
+  def cnpj(self):
+    return self.__cnpj
 
-    @cnpj.setter
-    def cnpj(self, value: str):
-      self.__cnpj = value
-      pass
+  @cnpj.setter
+  def cnpj(self, value: str):
+    self.__cnpj = value
+    pass
 
-    @property
-    def name(self):
-      return self.__name
+  @property
+  def name(self):
+    return self.__name
 
-    @name.setter
-    def name(self, value: str):
-      self.__name = value
-      pass
+  @name.setter
+  def name(self, value: str):
+    self.__name = value
+    pass
 
-    @property
-    def description(self):
-      return self.__description
+  @property
+  def description(self):
+    return self.__description
 
-    @description.setter
-    def description(self, value: str):
-      self.__description = value
-      pass
+  @description.setter
+  def description(self, value: str):
+    self.__description = value
+    pass
 
-    @property
-    def email(self):
-      return self.__email
+  @property
+  def email(self):
+    return self.__email
 
-    @email.setter
-    def email(self, value: str):
-      self.__email = value
-      pass
+  @email.setter
+  def email(self, value: str):
+    self.__email = value
+    pass
 
-    @property
-    def phone(self):
-      return self.__phone
+  @property
+  def phone(self):
+    return self.__phone
 
-    @phone.setter
-    def phone(self, value: str):
-      self.__phone = value
-      pass
+  @phone.setter
+  def phone(self, value: str):
+    self.__phone = value
+    pass
 
-    @property
-    def address(self):
-      return self.__address
+  @property
+  def address(self):
+    return self.__address
 
-    @address.setter
-    def address(self, value: str):
-      self.__address = value
-      pass
+  @address.setter
+  def address(self, value: str):
+    self.__address = value
+    pass

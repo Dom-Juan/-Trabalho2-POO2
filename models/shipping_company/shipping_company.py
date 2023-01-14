@@ -5,13 +5,13 @@ class ShippingCompany(object):
     """
     Purpose: value
     """
-    self.__code:int = random.sample(range(9999), 1)[0]
-    self.__cnpj:str = kwargs.get('cnpj', None)
-    self.__name:str = kwargs.get('name', None)
-    self.__email:str = kwargs.get('email', None)
-    self.__phone_number:str = kwargs.get('phone_number', None)
-    self.__address:str = kwargs.get('address', None)
-    self.__delivery_time:int = kwargs.get('delivery_time', None)
+    self.__code: int = random.sample(range(9999), 1)[0]
+    self.__cnpj: str = kwargs.get('cnpj', None)
+    self.__name: str = kwargs.get('name', None)
+    self.__email: str = kwargs.get('email', None)
+    self.__phone_number: str = kwargs.get('phone_number', None)
+    self.__address: str = kwargs.get('address', None)
+    self.__delivery_time: int = kwargs.get('delivery_time', None)
   # end alternate constructor
   
   @property
@@ -23,7 +23,7 @@ class ShippingCompany(object):
     return self.__cnpj
 
   @cnpj.setter
-  def cnpj(self, value:int):
+  def cnpj(self, value: int):
     self.cnpj = value
     pass
   
@@ -32,7 +32,7 @@ class ShippingCompany(object):
     return self.__name
   
   @name.setter
-  def name(self, value:str):
+  def name(self, value: str):
     self.__name = value
   
   @property
@@ -40,7 +40,7 @@ class ShippingCompany(object):
     return self.__email
   
   @email.setter
-  def email(self, value:str):
+  def email(self, value: str):
     self.__email = value
   
   @property
@@ -48,7 +48,7 @@ class ShippingCompany(object):
     return self.__phone_number
   
   @phone_number.setter
-  def phone_number(self, value:str):
+  def phone_number(self, value: str):
     self.__phone_number = value
   
   @property
@@ -56,7 +56,7 @@ class ShippingCompany(object):
     return self.__address
   
   @address.setter
-  def address(self, value:str):
+  def address(self, value: str):
     self.__address = value
   
   @property
@@ -64,7 +64,7 @@ class ShippingCompany(object):
     return self.__delivery_time
   
   @delivery_time.setter
-  def delivery_time(self, value:int):
+  def delivery_time(self, value: int):
     self.__delivery_time = value
 
 if __name__ == '__main__':

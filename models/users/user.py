@@ -6,16 +6,16 @@ class User(object):
   def __init__(self, **kwargs):
     self.__dict__.update(kwargs)
     self._user_code = random.sample(range(9999), 1)[0]  # Retorna uma lista de números inteiros sem repetição.
-    self._name:str = kwargs['name']
-    self._cpf:str = kwargs['cpf']
-    self._rg:str = kwargs['rg']
+    self._name: str = kwargs['name']
+    self._cpf: str = kwargs['cpf']
+    self._rg: str = kwargs['rg']
     if kwargs['anniversary_date'] == (None or ''):
       self._anniversary_date: any = None
     else:
       self._anniversary_date: str = datetime.datetime.strptime(kwargs['anniversary_date'], '%d/%m/%Y').date().strftime('%d/%m/%Y')
-    self._address:str = kwargs['address']
-    self._cep:str = kwargs['cep']
-    self._email:str = kwargs['email']
+    self._address: str = kwargs['address']
+    self._cep: str = kwargs['cep']
+    self._email: str = kwargs['email']
   # end constructor
   
   @property
@@ -23,7 +23,7 @@ class User(object):
     return self._user_code
 
   @user_code.setter
-  def user_code(self, value:int):
+  def user_code(self, value: int):
     """_summary_
     Args:
         value (int): _description_
@@ -36,7 +36,7 @@ class User(object):
     return self._name
 
   @name.setter
-  def name(self, value:str):
+  def name(self, value: str):
     """_summary_
     Args:
         value (str): _description_
@@ -49,7 +49,7 @@ class User(object):
     return self._cpf
 
   @cpf.setter
-  def cpf(self, value:str):
+  def cpf(self, value: str):
     """_summary_
     Args:
         value (str): _description_
@@ -62,7 +62,7 @@ class User(object):
     return self._rg
 
   @rg.setter
-  def rg(self, value:str):
+  def rg(self, value: str):
     """_summary_
     Args:
         value (str): _description_
@@ -75,7 +75,7 @@ class User(object):
     return self._anniversary_date
 
   @anniversary_date.setter
-  def anniversary_date(self, value:any):
+  def anniversary_date(self, value: any):
     """_summary_
     Args:
         value (any): _description_
@@ -88,7 +88,7 @@ class User(object):
     return self._address
 
   @address.setter
-  def address(self, value:str):
+  def address(self, value: str):
     """_summary_
     Args:
         value (str): _description_
@@ -101,7 +101,7 @@ class User(object):
     return self._cep
 
   @cep.setter
-  def cep(self, value:str):
+  def cep(self, value: str):
     """_summary_
     Args:
         value (str): _description_
@@ -114,7 +114,7 @@ class User(object):
     return self._email
 
   @email.setter
-  def email(self, value:str):
+  def email(self, value: str):
     """_summary_
     Args:
         value (str): _description_

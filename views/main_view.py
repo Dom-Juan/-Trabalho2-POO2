@@ -4,6 +4,8 @@ import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
+from controller.product_controller import ProductController
+
 # import de classes
 sys.path.append('../')
 
@@ -12,8 +14,9 @@ from controller.user_controller import UserController
 
 # Views
 # Criação de obj.
-from views.view_create_obj import create_client_view, create_manager_view, create_payment_money_view, \
-  create_payment_pix_view, create_payment_credit_card_view
+from views.view_create_obj import create_client_view, create_manager_view, create_manufacturer_view, \
+  create_payment_money_view, \
+  create_payment_pix_view, create_payment_credit_card_view, create_product_view
 # Mostrar os obj.
 from views.view_show_obj import show_clients_view, show_managers_view
 # Salvar estado do e-comerce.
@@ -37,6 +40,7 @@ def main_window(name, e_comerce):
     ctypes.windll.shcore.SetProcessDpiAwareness(True)
   # Instanciando a imobiliária
   user_controller = UserController(client_list=[], manager_list=[])
+  product_controller = ProductController(product_list=[])
   pyglet.font.add_file(r"./fonts/Roboto-Regular.ttf")
   font1 = ("Roboto Regular", 12)
   sg.set_options(font=font1)
@@ -91,6 +95,10 @@ def main_window(name, e_comerce):
             '&Produtos',
             [
               'Adicionar Produto',
+              'Adicionar Eletrônicos',
+              'Adicionar Eletrodomésticos',
+              'Adicionar Vestuário',
+              'Adicionar Móveis',
               'Mostrar todos os Produtos',
             ]
           ],
@@ -140,6 +148,7 @@ def main_window(name, e_comerce):
   window = sg.Window(name, layout, size=(1280, 720), resizable=True, enable_close_attempted_event=True, finalize=True)
   # Objetos instanciados com Null para receberem os ponteiros depois.
   while True:
+    result: object = None
     event, values = window.read()
     layout2.append([sg.Text('Resultado'), values])
     print(event)
@@ -159,6 +168,20 @@ def main_window(name, e_comerce):
       else:
         e_comerce.manager_list = result
         result_window('Operação feita com sucesso')
+    if event in ['Adicionar Produto']:
+      result = create_product_view(product_controller, e_comerce.manufacturer_list)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        e_comerce.product_list = result
+        result_window('Operação feita com sucesso')
+    if event in ['Adicionar Fabricante']:
+      result = create_manufacturer_view(e_comerce.manufacturer_list)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        e_comerce.manufacturer_list = result
+        result_window('Operação feita com sucesso')
     if event in ['Adicionar Pagamento por cartão']:
       pass
     if event in ['Adicionar Pagamento por dinheiro']:
@@ -172,4 +195,5 @@ def main_window(name, e_comerce):
     if event in ['Mostrar todos Gerentes']:
       show_managers_view(user_controller)
     # Lógica de criação dos objetos.
+    del result
   window.close()

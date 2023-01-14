@@ -9,4 +9,4 @@ class Eletronics(Product):
     super(self, Eletronics).__init__(kwargs)
 
   def calc_value(self):
-    return self.value_price * 3.5
+    return self.value_price + (self.value_price * 3.5)

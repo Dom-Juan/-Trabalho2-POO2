@@ -7,7 +7,7 @@ class Product(object):
     self._product_code: int = random.sample(range(999999), 1)[0]  # Retorna uma lista de números inteiros sem repetição.
     self._name: str = kwargs.get('name', None)
     self._description: str = kwargs.get('description', None)
-    if kwargs['anniversary_date'] == (None or ''):
+    if kwargs['manufacture_date'] == (None or ''):
       self._manufacture_date: any = None
     else:
       self._manufacture_date: str = datetime.datetime.strptime(

@@ -27,7 +27,7 @@ class UserController(object):
       if (c.cpf == cpf or c.rg == rg) or c.email == email:
         return False
       else:
-        break
+        continue
     if gold_client:
       gold_client = True
     else:
