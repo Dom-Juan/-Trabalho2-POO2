@@ -1,13 +1,5 @@
-import sys
-
-from models.products.clothing import Clothing
-from models.products.domestic_appliance import DomesticAppliance
-from models.products.eletronics import Eletronics
-from models.products.furnitures import Furnitures
-
-sys.path.append('..//..')
-
-print(sys.path)
+from models.factory.concrete_creator import ConcreteCreatorClothing, ConcreteCreatorDomesticAppliance,\
+  ConcreteCreatorEletronics, ConcreteCreatorFurnitures
 
 
 class ProductController(object):
@@ -15,77 +7,87 @@ class ProductController(object):
     """
     Purpose: value
     """
-    self._product_list: list = kwargs.get('product_list')
     # end alternate constructor
 
-  def create_product_clothing(self, name: str, description: str,
-                     manufacture_date: str, value_price: float, manufacturer: object,
-                     available: bool) -> object:
-    product: object = None
-    for p in self._product_list:
-      if p.name == name:
-        return False
-      else:
-        product = Clothing(
-          name,
-          description,
-          manufacture_date,
-          value_price,
-          manufacturer,
-          available
-        )
+  def create_product_clothing(
+      self,
+      name: str,
+      description: str,
+      manufacture_date: str,
+      value_price: float,
+      manufacturer: object,
+      available: bool
+    ) -> object:
+    creator: object = ConcreteCreatorClothing()
+    product: object = creator.factory_method(
+      name=name,
+      description=description,
+      manufacture_date=manufacture_date,
+      value_price=value_price,
+      manufacturer=manufacturer,
+      available=available
+    )
     return product
 
-  def create_product_domestic_appliance(self, name: str, description: str,
-                              manufacture_date: str, value_price: float, manufacturer: object,
-                              available: bool) -> object:
-    product: object = None
-    for p in self._product_list:
-      if p.name == name:
-        return False
-      else:
-        product = DomesticAppliance(
-          name,
-          description,
-          manufacture_date,
-          value_price,
-          manufacturer,
-          available
-        )
+
+
+  def create_product_domestic_appliance(
+      self,
+      name: str,
+      description: str,
+      manufacture_date: str,
+      value_price: float,
+      manufacturer: object,
+      available: bool
+  ) -> object:
+    creator: object = ConcreteCreatorDomesticAppliance()
+    product: object = creator.factory_method(
+      name=name,
+      description=description,
+      manufacture_date=manufacture_date,
+      value_price=value_price,
+      manufacturer=manufacturer,
+      available=available
+    )
     return product
 
-  def create_product_furnitures(self, name: str, description: str,
-                                          manufacture_date: str, value_price: float, manufacturer: object,
-                                          available: bool) -> object:
-    product: object = None
-    for p in self._product_list:
-      if p.name == name:
-        return False
-      else:
-        product = Furnitures(
-          name,
-          description,
-          manufacture_date,
-          value_price,
-          manufacturer,
-          available
-        )
+
+  def create_product_furnitures(
+      self,
+      name: str,
+      description: str,
+      manufacture_date: str,
+      value_price: float,
+      manufacturer: object,
+      available: bool
+  ) -> object:
+    creator: object = ConcreteCreatorFurnitures()
+    product: object = creator.factory_method(
+      name=name,
+      description=description,
+      manufacture_date=manufacture_date,
+      value_price=value_price,
+      manufacturer=manufacturer,
+      available=available
+    )
     return product
 
-  def create_product_eletronics(self, name: str, description: str,
-                                    manufacture_date: str, value_price: float, manufacturer: object,
-                                    available: bool) -> object:
-    product: object = None
-    for p in self._product_list:
-      if p.name == name:
-        return False
-      else:
-        product = Eletronics(
-          name,
-          description,
-          manufacture_date,
-          value_price,
-          manufacturer,
-          available
-        )
+  def create_product_eletronics(
+      self,
+      name: str,
+      description: str,
+      manufacture_date: str,
+      value_price: float,
+      manufacturer: object,
+      available: bool
+  ) -> object:
+    creator: object = ConcreteCreatorEletronics()
+    product: object = creator.factory_method(
+      name=name,
+      description=description,
+      manufacture_date=manufacture_date,
+      value_price=value_price,
+      manufacturer=manufacturer,
+      available=available
+    )
     return product

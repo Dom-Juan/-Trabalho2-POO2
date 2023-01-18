@@ -4,6 +4,7 @@ import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
+from controller.payment_controller import PaymentController
 from controller.product_controller import ProductController
 
 # import de classes
@@ -18,7 +19,10 @@ from views.view_create_obj import create_client_view, create_manager_view, creat
   create_payment_money_view, \
   create_payment_pix_view, create_payment_credit_card_view, create_product_view
 # Mostrar os obj.
-from views.view_show_obj import show_clients_view, show_managers_view
+from views.view_show_obj import show_clients_view, show_managers_view, show_manufacturer_view, show_payments_view, \
+  show_products_view
+
+
 # Salvar estado do e-comerce.
 # Mensagem de sucesso
 
@@ -41,6 +45,7 @@ def main_window(name, e_comerce):
   # Instanciando a imobiliária
   user_controller = UserController(client_list=[], manager_list=[])
   product_controller = ProductController(product_list=[])
+  payment_controller = PaymentController(payment_list=[])
   pyglet.font.add_file(r"./fonts/Roboto-Regular.ttf")
   font1 = ("Roboto Regular", 12)
   sg.set_options(font=font1)
@@ -95,14 +100,14 @@ def main_window(name, e_comerce):
             '&Produtos',
             [
               'Adicionar Produto',
-              'Mostrar todos os Produtos',
+              'Mostrar todos Produtos',
             ]
           ],
           [
             '&Fabricantes',
             [
               'Adicionar Fabricante',
-              'Mostrar Fabricante',
+              'Mostrar todos Fabricantes',
             ]
           ],
           [
@@ -178,18 +183,39 @@ def main_window(name, e_comerce):
       else:
         e_comerce.manufacturer_list = result
         result_window('Operação feita com sucesso')
-    if event in ['Adicionar Pagamento por cartão']:
-      pass
-    if event in ['Adicionar Pagamento por dinheiro']:
-      pass
-    if event in ['Adicionar Pagamento por pix']:
-      pass
+    if event in ['Adicionar Pagamento por cartão']: # Cartão.
+      result = create_payment_credit_card_view(payment_controller)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        payment_controller.payment_list = result
+        result_window('Operação feita com sucesso')
+    if event in ['Adicionar Pagamento por dinheiro']: # Dinheiro.
+      result = create_payment_money_view(payment_controller)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        payment_controller.payment_list = result
+        result_window('Operação feita com sucesso')
+    if event in ['Adicionar Pagamento por pix']:  # PIX.
+      result = create_payment_pix_view(payment_controller)
+      if result is None:
+        result_window('Operação Falhou!')
+      else:
+        payment_controller.payment_list = result
+        result_window('Operação feita com sucesso')
     # FIM CRIAR OBJETOS.
     # INICIO MOSTRAR INFORMAÇÕES NA GUI.
     if event in ['Mostrar todos Clientes']:
       show_clients_view(user_controller)
     if event in ['Mostrar todos Gerentes']:
       show_managers_view(user_controller)
+    if event in ['Mostrar todos Produtos']:
+      show_products_view(e_comerce.product_list)
+    if event in ['Mostrar todos Fabricantes']:
+      show_manufacturer_view(e_comerce.manufacturer_list)
+    if event in ['Mostrar todos pagamentos']:
+      show_payments_view(payment_controller)
     # Lógica de criação dos objetos.
     del result
   window.close()

@@ -2,7 +2,8 @@ import random
 
 
 class Payment:
-  def __init__(self):
+  def __init__(self, **kwargs):
+    self.__dict__.update(kwargs)
     self.__recipe_code = self._user_code = random.sample(range(9999999), 1)[0]
   
   @property

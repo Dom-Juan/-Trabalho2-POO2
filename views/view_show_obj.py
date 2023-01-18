@@ -1,10 +1,13 @@
 import PySimpleGUI as sg
 import sys
 
+from models.payment_methods.credit_card import CreditCard
+from models.payment_methods.pix import Pix
+
 
 # Mensagem de sucesso
 def result_window(text) -> None:
-  layout = [
+  layout: list = [
     [sg.Text(text, key="new")],
     [sg.Button('Ok', pad=(5, 5), size=(20, 1))]
   ]
@@ -30,8 +33,8 @@ def print_info(obj_type, obj_array):
 def show_clients_view(user_controller):
   user_list: list = user_controller.get_all_clients()
   print(user_list)
-  layout = []
-  Col = []
+  layout: list = []
+  Col: list = []
   if None in user_list:
     result_window('Erro, existe NULL no vetor.')
     return False
@@ -115,8 +118,8 @@ def show_clients_view(user_controller):
 def show_managers_view(user_controller):
   manager_list: list = user_controller.get_all_managers()
   print(manager_list)
-  layout = []
-  Col = []
+  layout: list = []
+  Col: list = []
   if None in manager_list:
     result_window('Erro, existe NULL no vetor.')
     return False
@@ -202,5 +205,192 @@ def show_managers_view(user_controller):
   window.close()
 
 
+def show_products_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for product in product_list:
+    if product is not None:
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append(
+        [
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(product.name), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Descrição:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(product.description), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Data de criação:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Preço:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Disponível:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(product.available), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Fabricante:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
 
+
+def show_manufacturer_view(manufacturer_list):
+  print(manufacturer_list)
+  layout: list = []
+  Col: list = []
+  if None in manufacturer_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for manufacturer in manufacturer_list:
+    if manufacturer is not None:
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(manufacturer.manufacturer_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('CNPJ:', pad=(5, 5), size=(20, 1)),  # Label
+        sg.Text(str(manufacturer.cnpj), pad=(5, 5), size=(45, 1))  # Valor do obj.
+      ])
+      Col.append(
+        [
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(manufacturer.name), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Descrição:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(manufacturer.description), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Email:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(manufacturer.email), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Telefone:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(manufacturer.phone), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(manufacturer.address), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_payments_view(payment_controller):
+  layout = []
+  Col = []
+  if None in payment_controller.payment_list:
+    result_window('Erro, existe NULL/None no vetor.')
+    return False
+  for payment in payment_controller.payment_list:
+    Col.append([sg.HSeparator()])
+    Col.append(
+      [
+        sg.Text('ID:', pad=(5, 5), size=(20, 1)),
+        sg.Text(str(payment.recipe_note), pad=(5, 5), size=(45, 1))
+      ]
+    )
+    Col.append(
+      [
+        sg.Text('Quantia:', pad=(5, 5), size=(20, 1)),
+        sg.Text(str(payment.quantity), pad=(5, 5), size=(45, 1))
+      ]
+    )
+    if isinstance(payment, CreditCard):
+      Col.append(
+        [
+          sg.Text('Nome no cartão:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(payment.name), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Bandeira:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(payment.flag), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Número do cartão:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(payment.card_number), pad=(5, 5), size=(45, 1))
+        ]
+      )
+    elif isinstance(payment, Pix):
+      Col.append(
+        [
+          sg.Text('Código PIX:', pad=(5, 5), size=(20, 1)),
+          sg.Text(str(payment.pix_code), pad=(5, 5), size=(45, 1))
+        ]
+      )
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os métodos de pagamento", layout, element_justification='c',
+                     resizable=True, finalize=True,
+                     modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
 # FIM Mostrar Objetos

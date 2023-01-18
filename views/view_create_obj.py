@@ -26,6 +26,7 @@ def result_window(text) -> None:
       break
   window.close()
 
+
 # INÍCIO DA LÓGICA DE CRIAÇÃO DE OBJETOS.
 # Criar Clientes.
 def create_client_view(user_controller:object):
@@ -65,6 +66,8 @@ def create_client_view(user_controller:object):
           gold_client=values[7],
         )
       window.close()
+
+
 # Criar Gerentes.
 def create_manager_view(user_controller:object):
   layout = [
@@ -107,6 +110,11 @@ def create_manager_view(user_controller:object):
       window.close()
 
 
+# Criar uma Venda
+def create_sale_view():
+  pass
+
+
 # Criar um produto
 def create_product_view(product_controller, manufacturer_list):
   product: object = None
@@ -122,7 +130,7 @@ def create_product_view(product_controller, manufacturer_list):
     [sg.Text('Disponível:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input6")],
     [
       sg.T("Tipo:"),
-      sg.Radio('Móvel', "RADIO1", key="key1", default=True),
+      sg.Radio('Móvel', "RADIO1", key="key1"),
       sg.Radio('Eletrodomésticos', "RADIO2", key="key2"),
       sg.Radio('Eletronicos', "RADIO3", key="key3"),
       sg.Radio('Vestuario', "RADIO5", key="key4")
@@ -138,7 +146,7 @@ def create_product_view(product_controller, manufacturer_list):
     result_window('Erro, controller não foi criado direito...')
     return False
   else:
-    # Mostrando a GUI, outras funções podem serem chamada.
+    # Mostrando a GUI, outras funções podem ser chamada.
     while True:
       event, values = window.read(close=True)
       print(event)
@@ -183,6 +191,9 @@ def create_product_view(product_controller, manufacturer_list):
             values['input6'],
           )
         if product is None:
+          result_window('Erro ao criar o produto! Algo deu errado...')
+          break
+        elif product is False:
           result_window('Erro ao criar o produto! Produto já existe')
           break
         else:
@@ -206,7 +217,7 @@ def create_product_view(product_controller, manufacturer_list):
 
 
 # Criar Fabricante
-def create_manufacturer_view(manufacturer_list)-> object:
+def create_manufacturer_view(manufacturer_list) -> object:
   manufacturer: object = None
   layout = [
     [sg.Text('CNPJ:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input1")],
@@ -225,7 +236,7 @@ def create_manufacturer_view(manufacturer_list)-> object:
     result_window('Erro, controller não foi criado direito...')
     return False
   else:
-    # Mostrando a GUI, outras funções podem serem chamada.
+    # Mostrando a GUI, outras funções podem ser chamada.
     while True:
       event, values = window.read(close=True)
       print(event)
@@ -254,15 +265,83 @@ def create_manufacturer_view(manufacturer_list)-> object:
         continue
     window.close()
 
-# Criar Cartão de crédito
+
+# Criar Método de dinheiro
 def create_payment_money_view(payment_controller):
-  pass
+  layout = [
+    [sg.Text('Quantidade:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input1")],
+    [
+      sg.Button('Criar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4')),
+      sg.Button('Cancelar', pad=(5, 5), size=(20, 1), button_color=('white', 'red4')),
+    ],
+  ]
+  window = sg.Window("Adicionar Fabricante", layout, element_justification='c', resizable=True, margins=(5, 5))
+  # Mostrando a GUI, outras funções podem serem chamada.
+  while True:
+    event, values = window.read(close=True)
+    print(event)
+    print(values)
+    if event == sg.WIN_CLOSED or event == "Cancelar":
+      break
+    elif event in ['Criar']:
+      return payment_controller.create_payment_money(
+        values['input1']
+      )
+  window.close()
 
 
+# Criar Método de PIX
 def create_payment_pix_view(payment_controller):
-  pass
+  layout = [
+    [sg.Text('Código PIX:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input1")],
+    [sg.Text('Quantidade:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input2")],
+    [
+      sg.Button('Criar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4')),
+      sg.Button('Cancelar', pad=(5, 5), size=(20, 1), button_color=('white', 'red4')),
+    ],
+  ]
+  window = sg.Window("Adicionar Fabricante", layout, element_justification='c', resizable=True, margins=(5, 5))
+  # Mostrando a GUI, outras funções podem serem chamada.
+  while True:
+    event, values = window.read(close=True)
+    print(event)
+    print(values)
+    if event == sg.WIN_CLOSED or event == "Cancelar":
+      break
+    elif event in ['Criar']:
+      return payment_controller.create_payment_pix(
+        values['input1'],
+        values['input2']
+      )
+  window.close()
 
 
+# Criar Cartão de Crédito
 def create_payment_credit_card_view(payment_controller):
-  pass
+  layout = [
+    [sg.Text('Nome no cartão:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input1")],
+    [sg.Text('Bandeira:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input2")],
+    [sg.Text('Número:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input3")],
+    [sg.Text('Quantidade:', pad=(5, 5), size=(20, 1)), sg.InputText(size=(32, 1), key="input4")],
+    [
+      sg.Button('Criar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4')),
+      sg.Button('Cancelar', pad=(5, 5), size=(20, 1), button_color=('white', 'red4')),
+    ],
+  ]
+  window = sg.Window("Adicionar Fabricante", layout, element_justification='c', resizable=True, margins=(5, 5))
+  # Mostrando a GUI, outras funções podem serem chamada.
+  while True:
+    event, values = window.read(close=True)
+    print(event)
+    print(values)
+    if event == sg.WIN_CLOSED or event == "Cancelar":
+      break
+    elif event in ['Criar']:
+      return payment_controller.create_payment_credit_card(
+        values['input1'],
+        values['input2'],
+        values['input3'],
+        values['input4']
+      )
+  window.close()
 # FIM DA LÓGICA DE CRIAÇÃO DE OBJETOS.

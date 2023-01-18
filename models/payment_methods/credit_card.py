@@ -2,10 +2,11 @@ from models.payment_methods.payment import Payment
 
 
 class CreditCard(Payment):
-  def __int__(self, **kwargs):
+  def __init__(self, **kwargs):
+    super(CreditCard, self).__init__()
     self.__name: str = kwargs.get('name', None)
     self.__flag: str = kwargs.get('flag', None)
-    self.__card_number:str = kwargs.get('card_number', None)
+    self.__card_number: str = kwargs.get('card_number', None)
     self.__quantity: float = kwargs.get('quantity', 0)
 
   @property
@@ -43,3 +44,8 @@ class CreditCard(Payment):
   def quantity(self, value: float):
     self.__quantity = value
     pass
+
+
+if __name__ == '__main__':
+  c: object = CreditCard(name='AAAA', flag='Nubank', card_number='123', quantity=9)
+  print(c.name, c.flag)

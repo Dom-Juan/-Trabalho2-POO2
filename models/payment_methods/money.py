@@ -2,8 +2,8 @@ from models.payment_methods.payment import Payment
 
 
 class Money(Payment):
-  def __int__(self, **kwargs):
-    super().__init__()
+  def __init__(self, **kwargs):
+    super(Money, self).__init__()
     self.__quantity: float = kwargs.get('quantity', 0)
 
   @property

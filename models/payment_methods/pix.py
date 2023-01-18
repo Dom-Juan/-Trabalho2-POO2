@@ -2,11 +2,10 @@ from models.payment_methods.payment import Payment
 
 
 class Pix(Payment):
-  def __int__(self, **kwargs):
-    super().__int__()
+  def __init__(self, **kwargs):
+    super(Pix, self).__init__()
     self.__pix_code: str = kwargs.get('pix_code', 'null')
     self.__quantity: float = kwargs.get('quantity', 0)
-    # end constructor
 
   @property
   def pix_code(self):

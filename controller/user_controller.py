@@ -8,6 +8,7 @@ print(sys.path)
 
 # ??????????
 
+
 class UserController(object):
   def __init__(self, **kwargs):
     """
@@ -47,7 +48,6 @@ class UserController(object):
 
   def get_all_clients(self):
     return self._client_list
-
   # FIM Clientes.
 
   # Gerentes.
