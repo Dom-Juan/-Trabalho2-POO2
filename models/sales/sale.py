@@ -10,8 +10,8 @@ class Sale(object):
     today = datetime.date.today()
     self.__sale_date: any = today.strftime("%d/%m/%Y")
     self.__delivery_date: any = today + datetime.timedelta(days=kwargs.get('delivery_days', 0))
-    self.__item_sales_list: list = []
-    self.__total_value_to_pay: float = 0.0
+    self.__item_sales_list: list = kwargs.get('item_list', [])
+    self.__total_value_to_pay: float = kwargs.get('total_value_to_pay', 0.0)
     self.__discount_value: float = 0.0
     self.__payment_method: object = kwargs.get('payment_method', None)
     self.__shipping_company: object = kwargs.get('shipping_company', None)

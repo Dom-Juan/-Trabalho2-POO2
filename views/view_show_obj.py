@@ -1,34 +1,11 @@
 import PySimpleGUI as sg
-import sys
 
 from models.payment_methods.credit_card import CreditCard
 from models.payment_methods.pix import Pix
+from views.main_view import result_window
 
-
-# Mensagem de sucesso
-def result_window(text) -> None:
-  layout: list = [
-    [sg.Text(text, key="new")],
-    [sg.Button('Ok', pad=(5, 5), size=(20, 1))]
-  ]
-  window = sg.Window("Alerta!", layout, size=(320, 120), element_justification='c', resizable=True, modal=True)
-  while True:
-    event, values = window.read(close=True)
-    if event in ["Exit", sg.WIN_CLOSED, "Ok"]:
-      break
-  window.close()
 
 # Mostrar Objetos
-
-
-# Função helper para printa as info dos obj.
-def print_info(obj_type, obj_array):
-  for obj in obj_array[:]:
-    if type(obj) == obj_type:
-      obj.print_obj()
-  pass
-
-
 # Monstrando os Clientes
 def show_clients_view(user_controller):
   user_list: list = user_controller.get_all_clients()
@@ -43,66 +20,76 @@ def show_clients_view(user_controller):
       # layout da página.
       Col.append([sg.HSeparator()])
       Col.append([
-        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(client.user_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(client.user_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append(
         [
-          sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.name), pad=(5, 5), size=(45, 1))
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('CPF:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.cpf), pad=(5, 5), size=(45, 1))
+          sg.Text('CPF:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.cpf), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('RG:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.rg), pad=(5, 5), size=(45, 1))
+          sg.Text('RG:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.rg), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.anniversary_date), pad=(5, 5), size=(45, 1))
+          sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.anniversary_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.address), pad=(5, 5), size=(45, 1))
+          sg.Text('Endereço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.address), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('CEP:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.cep), pad=(5, 5), size=(45, 1))
+          sg.Text('CEP:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.cep), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Email:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.email), pad=(5, 5), size=(45, 1))
+          sg.Text('Email:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.email), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Cliente de Ouro:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.gold_client), pad=(5, 5), size=(45, 1))
+          sg.Text('Cliente de Ouro:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.gold_client), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Data de registro:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(client.register_date), pad=(5, 5), size=(45, 1))
+          sg.Text('Data de registro:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(client.register_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append([
+    sg.Column(
+      Col,
+      size=(640, 750),
+      element_justification='c',
+      scrollable=True,
+      vertical_scroll_only=True,
+      expand_x=True,
+      expand_y=True
+    )
+  ])
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os Clientes", layout, element_justification='c', resizable=True, finalize=True,
                       modal=True)
@@ -128,72 +115,84 @@ def show_managers_view(user_controller):
       # layout da página.
       Col.append([sg.HSeparator()])
       Col.append([
-        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(manager.user_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(manager.user_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append(
         [
-          sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.name), pad=(5, 5), size=(45, 1))
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('CPF:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.cpf), pad=(5, 5), size=(45, 1))
+          sg.Text('CPF:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.cpf), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('RG:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.rg), pad=(5, 5), size=(45, 1))
+          sg.Text('RG:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.rg), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.anniversary_date), pad=(5, 5), size=(45, 1))
+          sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.anniversary_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.address), pad=(5, 5), size=(45, 1))
+          sg.Text('Endereço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.address), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('CEP:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.cep), pad=(5, 5), size=(45, 1))
+          sg.Text('CEP:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.cep), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Email:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.email), pad=(5, 5), size=(45, 1))
+          sg.Text('Email:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.email), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Salário:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.wage), pad=(5, 5), size=(45, 1))
+          sg.Text('Salário:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.wage), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('pis:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.pis), pad=(5, 5), size=(45, 1))
+          sg.Text('pis:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.pis), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Data de adimissão:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manager.register_date), pad=(5, 5), size=(45, 1))
+          sg.Text('Data de adimissão:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manager.register_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os Gerentes", layout, element_justification='c', resizable=True, finalize=True,
                       modal=True)
@@ -217,48 +216,60 @@ def show_products_view(product_list):
       # layout da página.
       Col.append([sg.HSeparator()])
       Col.append([
-        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append(
         [
-          sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(product.name), pad=(5, 5), size=(45, 1))
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Descrição:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(product.description), pad=(5, 5), size=(45, 1))
+          sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Data de criação:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1))
+          sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Preço:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1))
+          sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Disponível:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(product.available), pad=(5, 5), size=(45, 1))
+          sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Fabricante:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1))
+          sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
                       modal=True)
@@ -282,46 +293,133 @@ def show_manufacturer_view(manufacturer_list):
       # layout da página.
       Col.append([sg.HSeparator()])
       Col.append([
-        sg.Text('ID:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(manufacturer.manufacturer_code), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(manufacturer.manufacturer_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('CNPJ:', pad=(5, 5), size=(20, 1)),  # Label
-        sg.Text(str(manufacturer.cnpj), pad=(5, 5), size=(45, 1))  # Valor do obj.
+        sg.Text('CNPJ:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(manufacturer.cnpj), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append(
         [
-          sg.Text('Nome: ', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manufacturer.name), pad=(5, 5), size=(45, 1))
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Descrição:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manufacturer.description), pad=(5, 5), size=(45, 1))
+          sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manufacturer.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Email:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manufacturer.email), pad=(5, 5), size=(45, 1))
+          sg.Text('Email:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manufacturer.email), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Telefone:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manufacturer.phone), pad=(5, 5), size=(45, 1))
+          sg.Text('Telefone:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manufacturer.phone), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Endereço:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(manufacturer.address), pad=(5, 5), size=(45, 1))
+          sg.Text('Endereço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(manufacturer.address), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
-  layout.append([sg.Column(Col, size=(640, 750), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_shipping_company_view(shipping_company_list):
+  print(shipping_company_list)
+  layout: list = []
+  Col: list = []
+  if None in shipping_company_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for company in shipping_company_list:
+    if company is not None:
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(company.code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('CNPJ:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(company.cnpj), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append(
+        [
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(company.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Email:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(company.email), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Telefone:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(company.phone_number), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Endereço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(company.address), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Tempo de entrega em dias:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(company.delivery_time), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
                       modal=True)
@@ -343,46 +441,57 @@ def show_payments_view(payment_controller):
     Col.append([sg.HSeparator()])
     Col.append(
       [
-        sg.Text('ID:', pad=(5, 5), size=(20, 1)),
-        sg.Text(str(payment.recipe_note), pad=(5, 5), size=(45, 1))
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+        sg.Text(str(payment.recipe_note), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
       ]
     )
     Col.append(
       [
-        sg.Text('Quantia:', pad=(5, 5), size=(20, 1)),
-        sg.Text(str(payment.quantity), pad=(5, 5), size=(45, 1))
+        sg.Text('Quantia:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+        sg.Text(str(payment.quantity), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
       ]
     )
     if isinstance(payment, CreditCard):
       Col.append(
         [
-          sg.Text('Nome no cartão:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(payment.name), pad=(5, 5), size=(45, 1))
+          sg.Text('Nome no cartão:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(payment.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Bandeira:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(payment.flag), pad=(5, 5), size=(45, 1))
+          sg.Text('Bandeira:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(payment.flag), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append(
         [
-          sg.Text('Número do cartão:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(payment.card_number), pad=(5, 5), size=(45, 1))
+          sg.Text('Número do cartão:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(payment.card_number), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
     elif isinstance(payment, Pix):
       Col.append(
         [
-          sg.Text('Código PIX:', pad=(5, 5), size=(20, 1)),
-          sg.Text(str(payment.pix_code), pad=(5, 5), size=(45, 1))
+          sg.Text('Código PIX:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(payment.pix_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
       Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
   layout.append(
-    [sg.Column(Col, size=(640, 800), element_justification='c', scrollable=True, vertical_scroll_only=True)])
+    [
+      sg.Column(
+        Col,
+        size=(640, 800),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
   layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
   window = sg.Window("Mostrando Todos os métodos de pagamento", layout, element_justification='c',
                      resizable=True, finalize=True,

@@ -4,8 +4,13 @@ from models.payment_methods.payment import Payment
 class Pix(Payment):
   def __init__(self, **kwargs):
     super(Pix, self).__init__()
+    self.__name = "PIX"
     self.__pix_code: str = kwargs.get('pix_code', 'null')
     self.__quantity: float = kwargs.get('quantity', 0)
+
+  @property
+  def name(self):
+    return self.__name
 
   @property
   def pix_code(self):
