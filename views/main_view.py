@@ -5,6 +5,7 @@ import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
 from controller.sale_controller import SaleController
+from helpers.helpers import result_window
 
 # import de classes
 sys.path.append('../')
@@ -25,28 +26,6 @@ from views.view_create_obj import create_client_view, create_manager_view, creat
 # Mostrar os obj.
 from views.view_show_obj import show_clients_view, show_managers_view, show_manufacturer_view, show_payments_view, \
   show_products_view, show_shipping_company_view
-
-
-# Salvar estado do e-comerce.
-# Mensagem de sucesso
-def result_window(text) -> None:
-  layout: list = [
-    [sg.Text(text, key="new")],
-    [sg.Button('Ok', pad=(5, 5), size=(20, 1))]
-  ]
-  window = sg.Window(
-    "Alerta!",
-    layout,
-    size=(320, 120),
-    element_justification='c',
-    resizable=True,
-    modal=True
-    )
-  while True:
-    event, values = window.read(close=True)
-    if event in ["Exit", sg.WIN_CLOSED, "Ok"]:
-      break
-  window.close()
 
 # Janela principal.
 def main_window(name, e_comerce):
@@ -177,6 +156,7 @@ def main_window(name, e_comerce):
       if data_array is None:
         result_window("Erro ao ler todos os dados!")
       else:
+        print(data_array)
         e_comerce, user_controller, sale_controller, product_controller, payment_controller = data_array
         if e_comerce is None:
           result_window("Erro ao ler o comercio digital")
@@ -184,6 +164,7 @@ def main_window(name, e_comerce):
           result_window("Erro ao ler o dados usuário")
         elif sale_controller is None:
           result_window("Erro ao ler os dados de vendas")
+          sale_controller = SaleController(sales_list=[], item_sale_list=[])
         elif product_controller is None:
           result_window("Erro ao ler os dados de produtos")
         elif payment_controller is None:

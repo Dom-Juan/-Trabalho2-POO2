@@ -40,6 +40,7 @@ class SaleController(object):
     return sale_made
 
   def create_item_sale(self, product: object, amount: float) -> object:
-    item_sale = ItemSale(product=product, item_value=product.value_price, quantity=amount)
+    new_value_price: float = product.value_price * amount if amount > 0 else product.value_price
+    item_sale = ItemSale(product=product, item_value=new_value_price, quantity=amount)
     self._item_sale_list.append(item_sale)
     return item_sale

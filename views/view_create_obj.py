@@ -169,7 +169,7 @@ def add_products_to_cart(e_comerce: object, sale_controller):
   window = sg.Window("Adicionar Produto à venda", layout, element_justification='c', resizable=True, margins=(5, 5))
   # Mostrando a GUI, outras funções podem serem chamada.
   while True:
-    event, values = window.read(close=True)
+    event, values = window.read()
     print(event)
     print(values)
     if event == sg.WIN_CLOSED or event == "Cancelar":
@@ -198,7 +198,7 @@ def add_payment_to_cart(payment_controller: object):
   window = sg.Window("Adicionar Pagamento à venda", layout, element_justification='c', resizable=True, margins=(5, 5))
   # Mostrando a GUI, outras funções podem serem chamada.
   while True:
-    event, values = window.read(close=True)
+    event, values = window.read()
     print(event)
     print(values)
     if event == sg.WIN_CLOSED or event == "Cancelar":
@@ -255,7 +255,7 @@ def create_sale_view(sale_controller: object, e_comerce: object, payment_control
     return False
   else:
     while True:
-      event, values = window.read(close=True)
+      event, values = window.read()
       if '' in values or None in values:
           result_window('Algum campo está vazio, tente novamente.')
           break

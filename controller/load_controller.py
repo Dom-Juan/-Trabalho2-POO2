@@ -9,12 +9,13 @@ def load_config():
       sale_controller: object = pickle.load(open('./files/save_config.pickle', 'rb'))
       product_controller: object = pickle.load(open('./files/save_config.pickle', 'rb'))
       payment_controller: object = pickle.load(open('./files/save_config.pickle', 'rb'))
+      print(e_comerce.name)
       if e_comerce is None:
         return  [None, None, None, None, None]
       elif user_controller is None:
         return  [None, None, None, None, None]
       elif sale_controller is None:
-        return  [None, None, None, None, None]
+        return  [e_comerce, user_controller, None, product_controller, payment_controller]
       elif product_controller is None:
         return  [None, None, None, None, None]
       elif payment_controller is None:

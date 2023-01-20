@@ -204,6 +204,83 @@ def show_managers_view(user_controller):
   window.close()
 
 
+def show_sales_view(sale_controller: object, e_comerce: object):
+  print(sale_controller.sales_list)
+  layout: list = []
+  Col: list = []
+  if None in sale_controller.sales_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for sale in sale_controller.sales_list:
+    if sale is not None:
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.sale_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Cliente:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Gerente:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Data de venda:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.sale_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Data de entrega:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.delivery_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Quantidade de itens pedido:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(len(sale.item_sale_list)), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Valor total da compra:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Compra com desconto:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Forma de pagamento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.payment_method.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([
+        sg.Text('Transportadora:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.shipping_company.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
 def show_products_view(product_list):
   print(product_list)
   layout: list = []
