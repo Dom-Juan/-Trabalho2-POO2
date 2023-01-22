@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 
 from models.payment_methods.credit_card import CreditCard
+from models.payment_methods.money import Money
 from models.payment_methods.pix import Pix
 from views.main_view import result_window
 
@@ -522,12 +523,6 @@ def show_payments_view(payment_controller):
         sg.Text(str(payment.recipe_note), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
       ]
     )
-    Col.append(
-      [
-        sg.Text('Quantia:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
-        sg.Text(str(payment.quantity), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
-      ]
-    )
     if isinstance(payment, CreditCard):
       Col.append(
         [
@@ -550,11 +545,24 @@ def show_payments_view(payment_controller):
     elif isinstance(payment, Pix):
       Col.append(
         [
+          sg.Text('Tipo:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(payment.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
           sg.Text('Código PIX:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
           sg.Text(str(payment.pix_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
         ]
       )
-      Col.append([sg.HSeparator()])
+    elif isinstance(payment, Money):
+      Col.append(
+        [
+          sg.Text('Tipo:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(payment.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+    Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
   layout.append(
     [

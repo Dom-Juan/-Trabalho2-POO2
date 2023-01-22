@@ -147,69 +147,7 @@ def create_manager_view(user_controller:object):
 
 
 # Criar uma Venda
-# Retorna um produto escolhido para a venda
-def add_products_to_cart(e_comerce: object, sale_controller):
-  products_dict: dict = {}
-  for p in e_comerce.product_list:
-    products_dict[p.name] = p
-  layout = [
-    [
-      sg.Text('Lista de produtos:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
-      sg.Combo(list(products_dict), size=(31, 1), key="product", expand_x=True, expand_y=True)
-    ],
-    [
-      sg.Text('Quantidade:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
-      sg.InputText(size=(32, 1), key="amount", expand_x=True, expand_y=True)
-    ],
-    [
-      sg.Button('Adicionar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4'), expand_x=True, expand_y=True),
-      sg.Button('Cancelar', pad=(5, 5), size=(20, 1), button_color=('white', 'red4'), expand_x=True, expand_y=True),
-    ],
-  ]
-  window = sg.Window("Adicionar Produto à venda", layout, element_justification='c', resizable=True, margins=(5, 5))
-  # Mostrando a GUI, outras funções podem serem chamada.
-  while True:
-    event, values = window.read()
-    print(event)
-    print(values)
-    if event == sg.WIN_CLOSED or event == "Cancelar":
-      break
-    if event in ['Criar']:
-      choosen_product: object = products_dict[str(values['product'])]
-      return sale_controller.create_item_sale(choosen_product, amount=values['amount'])
-  window.close()
-
-
-# Retorna um pagamento escolhido para a venda
-def add_payment_to_cart(payment_controller: object):
-  payment_dict: dict = {}
-  for p in payment_controller.payment_list:
-    payment_dict[p.name] = p
-  layout = [
-    [
-      sg.Text('Tipo de pagamento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
-      sg.Combo(list(payment_dict), size=(31, 1), key="payment", expand_x=True, expand_y=True)
-    ],
-    [
-      sg.Button('Adicionar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4'), expand_x=True, expand_y=True),
-      sg.Button('Cancelar', pad=(5, 5), size=(20, 1), button_color=('white', 'red4'), expand_x=True, expand_y=True),
-    ],
-  ]
-  window = sg.Window("Adicionar Pagamento à venda", layout, element_justification='c', resizable=True, margins=(5, 5))
-  # Mostrando a GUI, outras funções podem serem chamada.
-  while True:
-    event, values = window.read()
-    print(event)
-    print(values)
-    if event == sg.WIN_CLOSED or event == "Cancelar":
-      break
-    if event in ['Criar']:
-      choosen_payment: object = payment_dict[str(values['payment'])]
-      return choosen_payment
-  window.close()
-
-
-def create_sale_view(sale_controller: object, e_comerce: object, payment_controller):
+def create_sale_view(sale_controller: object, e_comerce: object, payment_controller, user_controller: object):
   client_dict: dict = {}          # dicionário para selecionar o cliente.
   manager_dict: dict = {}         # dicionário pra selecionar o objecto.
   shipping_company_dict: dict = {}# dicionário pra seleciona a transportadora.
@@ -218,10 +156,18 @@ def create_sale_view(sale_controller: object, e_comerce: object, payment_control
   payment_method: object = None   # Pagamento a ser adicionado
   for c in e_comerce.client_list:
     client_dict[c.name] = c
-  for m in e_comerce.manager_list:
+  for m in user_controller.get_all_managers():
+    print(m.name)
     manager_dict[m.name] = m
   for sp in e_comerce.shipping_company_list:
     shipping_company_dict[sp.name] = sp
+  products_dict: dict = {}
+  for p in e_comerce.product_list:
+    products_dict[p.name] = p
+    print(products_dict[p.name])
+  payment_dict: dict = {}
+  for p in payment_controller.payment_list:
+    payment_dict[p.name] = p
   layout: list = [
     [
       sg.Text('Cliente:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
@@ -237,16 +183,25 @@ def create_sale_view(sale_controller: object, e_comerce: object, payment_control
     ],
     [
       sg.Text('Transportadora:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
-      sg.Combo(list(shipping_company_dict), size=(31, 1), key="client", expand_x=True, expand_y=True)
+      sg.Combo(list(shipping_company_dict), size=(31, 1), key="shipping_company", expand_x=True, expand_y=True)
+    ],
+    [
+      sg.Text('Lista de produtos:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+      sg.Combo(list(products_dict), size=(31, 1), key="product", expand_x=True, expand_y=True)
+    ],
+    [
+      sg.Text('Tipo de pagamento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+      sg.Combo(list(payment_dict), size=(31, 1), key="payment", expand_x=True, expand_y=True)
+    ],
+    [
+      sg.Text('Quantidade:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+      sg.InputText(size=(32, 1), key="amount", expand_x=True, expand_y=True)
     ],
     [
       sg.Button('Criar', pad=(5, 5), size=(30, 1), button_color=('white', 'green4'), expand_x=True, expand_y=True)
     ],
     [
-      sg.Button('Adicionar Produto', pad=(5, 5), size=(30, 1), button_color=('white', 'yellow4'), expand_x=True, expand_y=True)
-    ],
-    [
-      sg.Button('Adicionar Método de Pagamento', pad=(5, 5), size=(30, 1), button_color=('white', 'yellow4'), expand_x=True, expand_y=True)
+      sg.Button('Cancelar', pad=(5, 5), size=(30, 1), button_color=('white', 'red4'), expand_x=True, expand_y=True)
     ]
   ]
   window = sg.Window("Criar Cliente", layout, element_justification='c', resizable=True, margins=(5, 5))
@@ -255,48 +210,36 @@ def create_sale_view(sale_controller: object, e_comerce: object, payment_control
     return False
   else:
     while True:
-      event, values = window.read()
+      event, values = window.read(close=True)
       if '' in values or None in values:
           result_window('Algum campo está vazio, tente novamente.')
           break
-      if event in ["Exit", sg.WIN_CLOSED]:
+      if event in ["Cancelar", sg.WIN_CLOSED]:
           break
       if event == "Criar":
         print(f"GUI loop, ")
+        # Pegando info da gui.
         client: object = client_dict[str(values['client'])]
         manager: object = manager_dict[str(values['manager'])]
         shipping_company: object = shipping_company_dict[str(values['shipping_company'])]
-        return sale_controller.create_sale(
-          client=client,
-          manager=manager,
-          delivery_days=shipping_company.delivery_time,
-          item_sales_list=item_list,
-          total_value_to_pay=total_value_to_pay,
-          payment_method=payment_method,
-          shipping_company=shipping_company,
-        )
-      if event == 'Adicionar Produto':
-        item: object = add_products_to_cart(e_comerce, sale_controller)
+        choosen_product: object = products_dict[str(values['product'])]
+        # Adicionando ItemSale obj.
+        item: object = sale_controller.create_item_sale(choosen_product, amount=float(values['amount']))
+        # Adicionando método de pagamento.
+        payment_method: object = payment_dict[str(values['payment'])]
         if item is not None:
           item_list.append(item)
-          result_window("Produto Adicionado!")
           for i in item_list:
             total_value_to_pay += i.item_value
-          layout.append(
-            [
-              sg.Text('Total a pagar:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
-              sg.Text(total_value_to_pay, key="total", pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True)
-            ],
+          return sale_controller.create_sale(
+            client=client,
+            manager=manager,
+            delivery_days=shipping_company.delivery_time,
+            item_sales_list=item_list,
+            total_value_to_pay=total_value_to_pay,
+            payment_method=payment_method,
+            shipping_company=shipping_company,
           )
-          result_window("Produto Adicionado!")
-        else:
-          result_window("Erro ao adicionar o produtom, tente novamente!")
-      if event == 'Adicionar Método de Pagamento':
-        payment_method = add_payment_to_cart(payment_controller)
-        if payment_method is not None:
-          result_window("Método de pagamento Adicionado!")
-        else:
-          result_window("Erro ao adicionar o método de pagamento, tente novamente!")
       window.close()
 
 

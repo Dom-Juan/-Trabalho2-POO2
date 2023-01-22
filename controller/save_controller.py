@@ -2,32 +2,111 @@ import pickle
 import os
 
 
-# Função criada para evitar repetições grandes na função de código.
-def save_logic(e_comerce, user_controller, sale_controller, product_controller, payment_controller, save_file):
-  print('DEBUG: save_logic')
-  pickle.dump(e_comerce, save_file, protocol=2)
-  pickle.dump(user_controller, save_file, protocol=2)
-  pickle.dump(sale_controller, save_file, protocol=2)
-  pickle.dump(product_controller, save_file, protocol=2)
-  pickle.dump(payment_controller, save_file, protocol=2)
-  return True
+# Salva os arquivos em um tipo pickle do python para salvar os objetos.
+def save_e_comerce_config(e_comerce) -> bool:
+  if os.path.exists('./files/e_comerce_config.pickle'):
+    with open('./files/e_comerce_config.pickle', 'wb') as save_file:
+      try:
+        pickle.dump(e_comerce, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
+  else:
+    with open('./files/e_comerce_config.pickle', 'ab') as save_file:
+      try:
+        pickle.dump(e_comerce, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
 
 
 # Salva os arquivos em um tipo pickle do python para salvar os objetos.
-def save_config(e_comerce, user_controller, sale_controller, product_controller, payment_controller):
-  if os.path.exists('./files/save_config.pickle'):
-    with open('./files/save_config.pickle', 'wb') as save_file:
+def save_user_controller_config(user_controller) -> bool:
+  if os.path.exists('./files/user_controller.pickle'):
+    with open('./files/user_controller.pickle', 'wb') as save_file:
       try:
-        save_logic(e_comerce, user_controller, sale_controller, product_controller, payment_controller, save_file)
+        pickle.dump(user_controller, save_file, protocol=2)
       except EOFError:
         print('Erro ao salvar arquivo...')
+        return False
       finally:
-        return 'Sucesso ao salvar os dados.'
+        return True
   else:
-    with open('./files/save_config.pickle', 'ab') as save_file:
+    with open('./files/user_controller.pickle', 'ab') as save_file:
       try:
-        save_logic(e_comerce, user_controller, sale_controller, product_controller, payment_controller, save_file)
+        pickle.dump(user_controller, save_file, protocol=2)
       except EOFError:
         print('Erro ao salvar arquivo...')
+        return False
       finally:
-        return 'Sucesso ao salvar os dados.'
+        return True
+
+
+# Salva os arquivos em um tipo pickle do python para salvar os objetos.
+def save_sale_controller_config(sale_controller) -> bool:
+  if os.path.exists('./files/sale_controller.pickle'):
+    with open('./files/sale_controller.pickle', 'wb') as save_file:
+      try:
+        pickle.dump(sale_controller, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
+  else:
+    with open('./files/sale_controller.pickle', 'ab') as save_file:
+      try:
+        pickle.dump(sale_controller, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
+
+
+# Salva os arquivos em um tipo pickle do python para salvar os objetos.
+def save_product_controller_config(product_controller) -> bool:
+  if os.path.exists('./files/product_controller.pickle'):
+    with open('./files/product_controller.pickle', 'wb') as save_file:
+      try:
+        pickle.dump(product_controller, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
+  else:
+    with open('./files/product_controller.pickle', 'ab') as save_file:
+      try:
+        pickle.dump(product_controller, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
+
+
+# Salva os arquivos em um tipo pickle do python para salvar os objetos.
+def save_payment_controller_config(payment_controller) -> bool:
+  if os.path.exists('./files/payment_controller.pickle'):
+    with open('./files/payment_controller.pickle', 'wb') as save_file:
+      try:
+        pickle.dump(payment_controller, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True
+  else:
+    with open('./files/payment_controller.pickle', 'ab') as save_file:
+      try:
+        pickle.dump(payment_controller, save_file, protocol=2)
+      except EOFError:
+        print('Erro ao salvar arquivo...')
+        return False
+      finally:
+        return True

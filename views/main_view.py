@@ -14,7 +14,10 @@ sys.path.append('../')
 from controller.user_controller import UserController
 from controller.payment_controller import PaymentController
 from controller.product_controller import ProductController
-from controller.save_controller import save_config
+# Salvamento de dados em binário utilizando Pickle.
+from controller.save_controller import save_e_comerce_config, save_user_controller_config, save_sale_controller_config,\
+  save_product_controller_config, save_payment_controller_config
+# Carregar os dados salvos
 from controller.load_controller import load_config
 
 # Views
@@ -148,9 +151,16 @@ def main_window(name, e_comerce):
     if event in [sg.WIN_CLOSE_ATTEMPTED_EVENT, 'Sair']:
       break
     if event in ['Salvar arquivo do programa']:
-      result_window(
-        str(save_config(e_comerce, user_controller, sale_controller, product_controller, payment_controller))
-      )
+      result: list = []
+      result.append(save_e_comerce_config(e_comerce))
+      result.append(save_user_controller_config(user_controller))
+      result.append(save_sale_controller_config(sale_controller))
+      result.append(save_product_controller_config(product_controller))
+      result.append(save_payment_controller_config(payment_controller))
+      if None in result or False in result:
+        result_window("Erro ao salvar dados")
+      else:
+        result_window("Dados salvos com sucesso!")
     if event in ['Carregar arquivo do programa']:
       data_array = load_config()
       if data_array is None:
@@ -186,7 +196,7 @@ def main_window(name, e_comerce):
         e_comerce.manager_list = result
         result_window('Operação feita com sucesso')
     if event in ['Criar Venda']:
-      result = create_sale_view(sale_controller, e_comerce, payment_controller)
+      result = create_sale_view(sale_controller, e_comerce, payment_controller, user_controller)
       if result is None:
         result_window('Operação Falhou!')
       else:
