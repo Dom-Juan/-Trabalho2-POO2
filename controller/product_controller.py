@@ -91,3 +91,11 @@ class ProductController(object):
       available=available
     )
     return product
+
+  # Retorna um dicionário para ser usado na interface.
+  def generate_dict_products(self, e_comerce) -> dict:
+    products_dict: dict = {}
+    for p in e_comerce.product_list:
+      products_dict[p.name] = p
+      print(products_dict[p.name])
+    return products_dict

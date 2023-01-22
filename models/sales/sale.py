@@ -107,10 +107,18 @@ class Sale(object):
     self.__item_sales_list.append(value)
     pass
 
-  def calc_total_sale_value(self)-> float:
+  def calc_total_sale_value(self) -> float:
     total_to_pay: float = 0.0
     for i in self.item_sale_list:
       total_to_pay = total_to_pay + i.item_value
+    return total_to_pay - (total_to_pay * 0.03) if self.client.gold_client else total_to_pay
+
+  def calc_total_sale_value_with_discount(self) -> float:
+    total_to_pay: float = 0.0
+    for i in self.item_sale_list:
+      total_to_pay = total_to_pay + i.item_value
+    if self.discount_value > 0:
+      total_to_pay = total_to_pay * self.discount_value
     return total_to_pay - (total_to_pay * 0.03) if self.client.gold_client else total_to_pay
 
   def calc_delivery_date(self, value: int):

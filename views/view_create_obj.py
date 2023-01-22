@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
 import sys
 
+from helpers.helpers import str2bool
 from models.product_manufacturer.manufacturer import Manufacturer
 from models.shipping_company.shipping_company import ShippingCompany
 from views.main_view import result_window
@@ -70,7 +71,7 @@ def create_client_view(user_controller:object):
           address=values[4],
           cep=values[5],
           email=values[6],
-          gold_client=values[7],
+          gold_client=str2bool(values[7]),
         )
       window.close()
 
@@ -147,27 +148,28 @@ def create_manager_view(user_controller:object):
 
 
 # Criar uma Venda
-def create_sale_view(sale_controller: object, e_comerce: object, payment_controller, user_controller: object):
-  client_dict: dict = {}          # dicionário para selecionar o cliente.
-  manager_dict: dict = {}         # dicionário pra selecionar o objecto.
-  shipping_company_dict: dict = {}# dicionário pra seleciona a transportadora.
-  item_list: list = []            # lista de produtos.
-  total_value_to_pay: float = 0.0 # Total a pagar dos produtos, calculado conforme os produtos são adicioandos.
-  payment_method: object = None   # Pagamento a ser adicionado
-  for c in e_comerce.client_list:
-    client_dict[c.name] = c
-  for m in user_controller.get_all_managers():
-    print(m.name)
-    manager_dict[m.name] = m
+def create_sale_view(
+    e_comerce: object,
+    sale_controller: object,
+    payment_controller: object,
+    user_controller: object,
+    product_controller: object
+  ):
+  # dicionário para selecionar o cliente.
+  client_dict: dict = user_controller.generate_dict_client(e_comerce)
+  # dicionário pra selecionar o objeto.
+  manager_dict: dict = user_controller.generate_dict_manager(e_comerce)
+  # dicionário para selecionar o produto.
+  products_dict: dict = product_controller.generate_dict_products(e_comerce)
+  # dicionario para selecionar o método de pagamento.
+  payment_dict: dict = payment_controller.generate_payment_dict(payment_controller)
+  # Variáveis adicionais.
+  item_list: list = []              # lista de produtos.
+  total_value_to_pay: float = 0.0   # Total a pagar dos produtos, calculado conforme os produtos são adicioandos.
+  payment_method: object = None     # Pagamento a ser adicionado
+  shipping_company_dict: dict = {}  # dicionário pra seleciona a transportadora.
   for sp in e_comerce.shipping_company_list:
     shipping_company_dict[sp.name] = sp
-  products_dict: dict = {}
-  for p in e_comerce.product_list:
-    products_dict[p.name] = p
-    print(products_dict[p.name])
-  payment_dict: dict = {}
-  for p in payment_controller.payment_list:
-    payment_dict[p.name] = p
   layout: list = [
     [
       sg.Text('Cliente:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
@@ -239,6 +241,7 @@ def create_sale_view(sale_controller: object, e_comerce: object, payment_control
             total_value_to_pay=total_value_to_pay,
             payment_method=payment_method,
             shipping_company=shipping_company,
+            discount_value=float(values['discount_value'])
           )
       window.close()
 
@@ -283,7 +286,6 @@ def create_product_view(product_controller, manufacturer_list):
      ],
     [
       sg.Button('Criar', pad=(5, 5), size=(20, 1), button_color=('white', 'green4'), expand_x=True, expand_y=True),
-      sg.Button('Resetar valores', pad=(5, 5), size=(20, 1), button_color=('white', 'yellow4'), expand_x=True, expand_y=True),
       sg.Button('Cancelar', pad=(5, 5), size=(20, 1), button_color=('white', 'red4'), expand_x=True, expand_y=True),
     ],
   ]
@@ -345,20 +347,6 @@ def create_product_view(product_controller, manufacturer_list):
         else:
           result_window('Produto adicionado!')
           return product
-      elif event in ['Resetar valores']:
-        # Resetando os inputs
-        window.find_element("input1").Update('')
-        window.find_element("input2").Update('')
-        window.find_element("input3").Update('')
-        window.find_element("input4").Update('')
-        window.find_element("input5").Update('')
-        window.find_element("input6").Update('')
-        # Resetando os botões Radios.
-        window["key1"].reset_group()
-        window["key2"].reset_group()
-        window["key3"].reset_group()
-        window["key4"].reset_group()
-        continue
     window.close()
 
 

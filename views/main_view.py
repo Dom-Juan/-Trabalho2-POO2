@@ -27,8 +27,14 @@ from views.view_create_obj import create_client_view, create_manager_view, creat
   create_payment_pix_view, create_payment_credit_card_view, create_product_view, create_sale_view, \
   create_shipping_company_view
 # Mostrar os obj.
-from views.view_show_obj import show_clients_view, show_managers_view, show_manufacturer_view, show_payments_view, \
-  show_products_view, show_shipping_company_view
+from views.view_show_obj import show_clients_view, show_clothing_products_view, show_domestic_appliance_products_view, \
+  show_eletronics_products_view, \
+  show_furnitures_products_view, \
+  show_golden_clients_view, show_managers_view, \
+  show_manufacturer_view, show_payments_view, \
+  show_products_view, show_sales_made_with_credit_card_view, show_sales_made_with_money_view, \
+  show_sales_made_with_pix_view, show_sales_view, \
+  show_shipping_company_view
 
 # Janela principal.
 def main_window(name, e_comerce):
@@ -74,6 +80,7 @@ def main_window(name, e_comerce):
             [
               'Criar Cliente',
               'Mostrar todos Clientes',
+              'Mostrar todos Clientes de Ouro'
             ],
           ],
           [
@@ -88,6 +95,9 @@ def main_window(name, e_comerce):
             [
               'Criar Venda',
               'Mostrar Vendas',
+              'Mostrar Vendas com Dinheiro',
+              'Mostrar Vendas com Cartão de Crédito',
+              'Mostrar Vendas paga com PIX'
             ]
           ],
           [
@@ -95,6 +105,10 @@ def main_window(name, e_comerce):
             [
               'Adicionar Produto',
               'Mostrar todos Produtos',
+              'Mostrar Móveis',
+              'Mostrar Eletrodomésticos',
+              'Mostrar Eletrônicos',
+              'Mostrar Vestuários'
             ]
           ],
           [
@@ -196,7 +210,7 @@ def main_window(name, e_comerce):
         e_comerce.manager_list = result
         result_window('Operação feita com sucesso')
     if event in ['Criar Venda']:
-      result = create_sale_view(sale_controller, e_comerce, payment_controller, user_controller)
+      result = create_sale_view(e_comerce, sale_controller, payment_controller, user_controller, product_controller)
       if result is None:
         result_window('Operação Falhou!')
       else:
@@ -247,11 +261,29 @@ def main_window(name, e_comerce):
     # FIM CRIAR OBJETOS.
     # INICIO MOSTRAR INFORMAÇÕES NA GUI.
     if event in ['Mostrar todos Clientes']:
-      show_clients_view(user_controller)
+      show_clients_view(e_comerce)
+    if event in ['Mostrar todos Clientes de Ouro']:
+      show_golden_clients_view(e_comerce)
     if event in ['Mostrar todos Gerentes']:
-      show_managers_view(user_controller)
+      show_managers_view(e_comerce)
+    if event in ['Mostrar Vendas']:
+      show_sales_view(e_comerce, sale_controller)
+    if event in ['Mostrar Vendas com Dinheiro']:
+      show_sales_made_with_money_view(e_comerce, sale_controller)
+    if event in ['Mostrar Vendas com Cartão de Crédito']:
+      show_sales_made_with_credit_card_view(e_comerce, sale_controller)
+    if event in ['Mostrar Vendas paga com PIX']:
+      show_sales_made_with_pix_view(e_comerce, sale_controller)
     if event in ['Mostrar todos Produtos']:
       show_products_view(e_comerce.product_list)
+    if event in ['Mostrar Móveis']:
+      show_furnitures_products_view(e_comerce.product_list)
+    if event in ['Mostrar Eletrodomésticos']:
+      show_domestic_appliance_products_view(e_comerce.product_list)
+    if event in ['Mostrar Eletrônicos']:
+      show_eletronics_products_view(e_comerce.product_list)
+    if event in ['Mostrar Vestuários']:
+      show_clothing_products_view(e_comerce.product_list)
     if event in ['Mostrar todos Fabricantes']:
       show_manufacturer_view(e_comerce.manufacturer_list)
     if event in ['Mostrar todas Transportadoras']:

@@ -27,3 +27,10 @@ class PaymentController:
   def create_payment_pix(self, pix_code: str, quantity: float) -> object:
     pix: object = Pix(pix_code=pix_code, quantity=quantity)
     return pix
+
+  # Retorna um dicionário para ser usado na interface.
+  def generate_payment_dict(self, payment_controller) -> dict:
+    payment_dict: dict = {}
+    for p in payment_controller.payment_list:
+      payment_dict[p.name] = p
+    return payment_dict

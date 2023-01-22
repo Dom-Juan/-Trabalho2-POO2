@@ -53,7 +53,7 @@ class EComerce(object):
     Returns:
         _type_: _description_
     """
-    return self.__client_list
+    return self.__manager_list
 
   @manager_list.setter
   def manager_list(self, value: object):

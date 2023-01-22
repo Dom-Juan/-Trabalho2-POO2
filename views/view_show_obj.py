@@ -3,13 +3,17 @@ import PySimpleGUI as sg
 from models.payment_methods.credit_card import CreditCard
 from models.payment_methods.money import Money
 from models.payment_methods.pix import Pix
+from models.products.clothing import Clothing
+from models.products.domestic_appliance import DomesticAppliance
+from models.products.eletronics import Eletronics
+from models.products.furnitures import Furnitures
 from views.main_view import result_window
 
 
 # Mostrar Objetos
 # Monstrando os Clientes
-def show_clients_view(user_controller):
-  user_list: list = user_controller.get_all_clients()
+def show_clients_view(e_comerce):
+  user_list: list = e_comerce.client_list
   print(user_list)
   layout: list = []
   Col: list = []
@@ -102,9 +106,104 @@ def show_clients_view(user_controller):
   window.close()
 
 
+def show_golden_clients_view(e_comerce):
+  user_list: list = e_comerce.client_list
+  print(user_list)
+  layout: list = []
+  Col: list = []
+  if None in user_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for client in user_list:
+    if client is not None:
+      if client.gold_client is True:
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(client.user_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append(
+          [
+            sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('CPF:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.cpf), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('RG:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.rg), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Ano de nascimento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.anniversary_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Endereço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.address), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('CEP:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.cep), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Email:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.email), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Cliente de Ouro:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.gold_client), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Data de registro:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(client.register_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append([
+    sg.Column(
+      Col,
+      size=(640, 750),
+      element_justification='c',
+      scrollable=True,
+      vertical_scroll_only=True,
+      expand_x=True,
+      expand_y=True
+    )
+  ])
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Clientes", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
 # Monstrando os Gerentes.
-def show_managers_view(user_controller):
-  manager_list: list = user_controller.get_all_managers()
+def show_managers_view(e_comerce):
+  manager_list: list = e_comerce.manager_list
   print(manager_list)
   layout: list = []
   Col: list = []
@@ -205,55 +304,55 @@ def show_managers_view(user_controller):
   window.close()
 
 
-def show_sales_view(sale_controller: object, e_comerce: object):
-  print(sale_controller.sales_list)
+def show_sales_view(e_comerce: object, sale_controller: object):
+  print(e_comerce.sales_list)
   layout: list = []
   Col: list = []
-  if None in sale_controller.sales_list:
+  if None in e_comerce.sales_list:
     result_window('Erro, existe NULL no vetor.')
     return False
-  for sale in sale_controller.sales_list:
+  for sale in e_comerce.sales_list:
     if sale is not None:
       # layout da página.
       Col.append([sg.HSeparator()])
       Col.append([
-        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('ID:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.sale_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Cliente:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('Cliente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Gerente:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('Gerente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Data de venda:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('Data de venda:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.sale_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Data de entrega:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('Data de entrega:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.delivery_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Quantidade de itens pedido:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
-        sg.Text(str(len(sale.item_sale_list)), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        sg.Text('Quantidade de itens pedido:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(int(sale_controller.get_item_amount(sale))), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
       ])
       Col.append([
-        sg.Text('Valor total da compra:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
-        sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        sg.Text('Valor total da compra:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Compra com desconto:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
-        sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        sg.Text('Compra com desconto:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Forma de pagamento:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('Forma de pagamento:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.payment_method.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([
-        sg.Text('Transportadora:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text('Transportadora:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
         sg.Text(str(sale.shipping_company.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
       ])
       Col.append([sg.HSeparator()])
@@ -280,6 +379,241 @@ def show_sales_view(sale_controller: object, e_comerce: object):
     if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
       break
   window.close()
+
+
+def show_sales_made_with_money_view(e_comerce: object, sale_controller: object):
+  print(e_comerce.sales_list)
+  layout: list = []
+  Col: list = []
+  if None in e_comerce.sales_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for sale in e_comerce.sales_list:
+    if sale is not None:
+      if isinstance(sale.payment_method, Money):
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.sale_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Cliente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Gerente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Data de venda:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.sale_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Data de entrega:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.delivery_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Quantidade de itens pedido:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(int(sale_controller.get_item_amount(sale))), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ])
+        Col.append([
+          sg.Text('Valor total da compra:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Compra com desconto:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Forma de pagamento:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.payment_method.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Transportadora:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.shipping_company.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_sales_made_with_credit_card_view(e_comerce: object, sale_controller: object):
+  print(e_comerce.sales_list)
+  layout: list = []
+  Col: list = []
+  if None in e_comerce.sales_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for sale in e_comerce.sales_list:
+    if sale is not None:
+      if isinstance(sale.payment_method, CreditCard):
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.sale_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Cliente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Gerente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Data de venda:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.sale_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Data de entrega:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.delivery_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Quantidade de itens pedido:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(int(sale_controller.get_item_amount(sale))), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ])
+        Col.append([
+          sg.Text('Valor total da compra:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Compra com desconto:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Forma de pagamento:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.payment_method.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Transportadora:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.shipping_company.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_sales_made_with_pix_view(e_comerce: object, sale_controller: object):
+  print(e_comerce.sales_list)
+  layout: list = []
+  Col: list = []
+  if None in e_comerce.sales_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for sale in e_comerce.sales_list:
+    if sale is not None:
+      if isinstance(sale.payment_method, Pix):
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.sale_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Cliente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.client.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Gerente:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.manager.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Data de venda:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.sale_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Data de entrega:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.delivery_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Quantidade de itens pedido:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(int(sale_controller.get_item_amount(sale))), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ])
+        Col.append([
+          sg.Text('Valor total da compra:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Compra com desconto:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.calc_total_sale_value()), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Forma de pagamento:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.payment_method.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([
+          sg.Text('Transportadora:', pad=(5, 5), size=(30, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(sale.shipping_company.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
 
 
 def show_products_view(product_list):
@@ -334,6 +668,318 @@ def show_products_view(product_list):
         ]
       )
       Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_furnitures_products_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for product in product_list:
+    if product is not None:
+      # layout da página.
+      if isinstance(product, Furnitures):
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append(
+          [
+            sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_domestic_appliance_products_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for product in product_list:
+    if product is not None:
+      if isinstance(product, DomesticAppliance):
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append(
+          [
+            sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_eletronics_products_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for product in product_list:
+    if product is not None:
+      if isinstance(product, Eletronics):
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append(
+          [
+            sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_clothing_products_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  for product in product_list:
+    if product is not None:
+      if isinstance(product, Clothing):
+        # layout da página.
+        Col.append([sg.HSeparator()])
+        Col.append([
+          sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+          sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+        ])
+        Col.append(
+          [
+            sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append(
+          [
+            sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+            sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+          ]
+        )
+        Col.append([sg.HSeparator()])
   layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
   layout.append(
     [

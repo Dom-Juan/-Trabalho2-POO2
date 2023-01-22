@@ -29,7 +29,7 @@ class UserController(object):
         return False
       else:
         continue
-    if gold_client:
+    if gold_client is True:
       gold_client = True
     else:
       gold_client = False
@@ -79,6 +79,20 @@ class UserController(object):
     return self._manager_list
   # Fim Gerentes.
 
+  # Retorna um dicionário para ser usado na interface.
+  def generate_dict_client(self, e_comerce) -> dict:
+    client_dict: dict = {}
+    for c in e_comerce.client_list:
+      client_dict[c.name] = c
+    return client_dict
+
+  # Retorna um dicionário para ser usado na interface.
+  # o getter to manager list estava retornando client, arrumado já!
+  def generate_dict_manager(self, e_comerce) -> dict:
+    manager_dict: dict = {}
+    for m in e_comerce.manager_list:
+      manager_dict[m.name] = m
+    return manager_dict
 
 if __name__ == '__main__':
   print("DEBUG: UserController")
