@@ -2,12 +2,6 @@ import sys
 from models.users.client import Client
 from models.users.manager import Manager
 
-sys.path.append('..//..')
-
-print(sys.path)
-
-# ??????????
-
 
 class UserController(object):
   def __init__(self, **kwargs):

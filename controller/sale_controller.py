@@ -1,11 +1,5 @@
-import sys
-
 from models.sales.sale import Sale
 from models.sales.item_sale import ItemSale
-
-sys.path.append('..//..')
-
-print(sys.path)
 
 
 class SaleController(object):

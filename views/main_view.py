@@ -4,16 +4,14 @@ import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
 
-from controller.sale_controller import SaleController
+# Helper para ajudar na lógica do programa e manter coesão.
 from helpers.helpers import result_window
-
-# import de classes
-sys.path.append('../')
 
 # Controllers
 from controller.user_controller import UserController
 from controller.payment_controller import PaymentController
 from controller.product_controller import ProductController
+from controller.sale_controller import SaleController
 # Salvamento de dados em binário utilizando Pickle.
 from controller.save_controller import save_e_comerce_config, save_user_controller_config, save_sale_controller_config,\
   save_product_controller_config, save_payment_controller_config
@@ -32,9 +30,12 @@ from views.view_show_obj import show_clients_view, show_clothing_products_view, 
   show_furnitures_products_view, \
   show_golden_clients_view, show_managers_view, \
   show_manufacturer_view, show_payments_view, \
-  show_products_view, show_sales_made_with_credit_card_view, show_sales_made_with_money_view, \
+  show_products_by_highest_view, show_products_by_lowest_view, show_products_view, \
+  show_sales_made_with_credit_card_view, \
+  show_sales_made_with_money_view, \
   show_sales_made_with_pix_view, show_sales_view, \
   show_shipping_company_view
+
 
 # Janela principal.
 def main_window(name, e_comerce):
@@ -108,7 +109,9 @@ def main_window(name, e_comerce):
               'Mostrar Móveis',
               'Mostrar Eletrodomésticos',
               'Mostrar Eletrônicos',
-              'Mostrar Vestuários'
+              'Mostrar Vestuários',
+              'Mostrar por maior preço',
+              'Mostrar por menor preço',
             ]
           ],
           [
@@ -155,7 +158,15 @@ def main_window(name, e_comerce):
   )
   layout2 = []  # layout da janela
   # Configurações da página.
-  window = sg.Window(name, layout, size=(680, 200), resizable=True, enable_close_attempted_event=True, finalize=True)
+  window = sg.Window(
+    name,
+    layout,
+    size=(680, 200),
+    resizable=True,
+    enable_close_attempted_event=True,
+    finalize=True,
+    location=(25, 25),
+  )
   # Objetos instanciados com Null para receberem os ponteiros depois.
   while True:
     result: object = None
@@ -284,6 +295,10 @@ def main_window(name, e_comerce):
       show_eletronics_products_view(e_comerce.product_list)
     if event in ['Mostrar Vestuários']:
       show_clothing_products_view(e_comerce.product_list)
+    if event in ['Mostrar por maior preço']:
+      show_products_by_highest_view(e_comerce.product_list)
+    if event in ['Mostrar por menor preço']:
+      show_products_by_lowest_view(e_comerce.product_list)
     if event in ['Mostrar todos Fabricantes']:
       show_manufacturer_view(e_comerce.manufacturer_list)
     if event in ['Mostrar todas Transportadoras']:

@@ -7,6 +7,8 @@ from models.products.clothing import Clothing
 from models.products.domestic_appliance import DomesticAppliance
 from models.products.eletronics import Eletronics
 from models.products.furnitures import Furnitures
+from strategy.context import Context
+from strategy.strategy import ConcreteStrategyHighest, ConcreteStrategyLowest
 from views.main_view import result_window
 
 
@@ -615,7 +617,6 @@ def show_sales_made_with_pix_view(e_comerce: object, sale_controller: object):
   window.close()
 
 
-
 def show_products_view(product_list):
   print(product_list)
   layout: list = []
@@ -623,6 +624,164 @@ def show_products_view(product_list):
   if None in product_list:
     result_window('Erro, existe NULL no vetor.')
     return False
+  for product in product_list:
+    if product is not None:
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append(
+        [
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_products_by_highest_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  context = Context(ConcreteStrategyHighest())
+  product_list = context.filter_alg(product_list)
+  for product in product_list:
+    if product is not None:
+      # layout da página.
+      Col.append([sg.HSeparator()])
+      Col.append([
+        sg.Text('ID:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),  # Label
+        sg.Text(str(product.product_code), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)  # Valor do obj.
+      ])
+      Col.append(
+        [
+          sg.Text('Nome: ', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Descrição:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.description), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Data de criação:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.manufacture_date), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Preço:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.value_price), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Disponível:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.available), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append(
+        [
+          sg.Text('Fabricante:', pad=(5, 5), size=(20, 1), expand_x=True, expand_y=True),
+          sg.Text(str(product.manufacturer.name), pad=(5, 5), size=(45, 1), expand_x=True, expand_y=True)
+        ]
+      )
+      Col.append([sg.HSeparator()])
+  layout.append([sg.Text('Mostrando informações', pad=(5, 5), size=(25, 1))])
+  layout.append(
+    [
+      sg.Column(
+        Col,
+        size=(640, 750),
+        element_justification='c',
+        scrollable=True,
+        vertical_scroll_only=True,
+        expand_x=True,
+        expand_y=True
+      )
+    ]
+  )
+  layout.append([sg.Button('Sair', size=(15, 1), button_color=('white', 'firebrick3'))])
+  window = sg.Window("Mostrando Todos os Produtos", layout, element_justification='c', resizable=True, finalize=True,
+                      modal=True)
+  window.TKroot.minsize(320, 240)
+  while True:
+    event, values = window.read(close=True)
+    if event in ["Exit", sg.WIN_CLOSED, "Sair"]:
+      break
+  window.close()
+
+
+def show_products_by_lowest_view(product_list):
+  print(product_list)
+  layout: list = []
+  Col: list = []
+  if None in product_list:
+    result_window('Erro, existe NULL no vetor.')
+    return False
+  context = Context(ConcreteStrategyLowest())
+  product_list = context.filter_alg(product_list)
   for product in product_list:
     if product is not None:
       # layout da página.
