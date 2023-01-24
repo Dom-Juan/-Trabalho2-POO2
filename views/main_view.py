@@ -1,3 +1,4 @@
+import os
 import PySimpleGUI as sg  # Interface.
 import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
@@ -46,8 +47,11 @@ def main_window(name, e_comerce):
   product_controller: object = ProductController(product_list=[])
   payment_controller: object = PaymentController(payment_list=[])
   # Carregando as fontes de texto.
-  pyglet.font.add_file(r"./fonts/Roboto-Regular.ttf")
-  font1 = ("Roboto Regular", 12)
+  if os.path.exists('./fonts/Roboto-Regular.ttf'):
+    pyglet.font.add_file(r"./fonts/Roboto-Regular.ttf")
+    font1 = ("Roboto Regular", 12)
+  else:
+    font1 = ("Arial", 12)
   sg.set_options(font=font1)
   sg.theme('SystemDefault')
   Col = [
