@@ -1,5 +1,4 @@
 import PySimpleGUI as sg  # Interface.
-import sys  # Sistema.
 import pyglet  # Helper para ajudar nos arquivos.
 import ctypes  # Tipos da linguagem C.
 import platform  # Biblioteca de paltaforma.
@@ -29,9 +28,9 @@ from views.view_show_obj import show_clients_view, show_clothing_products_view, 
   show_eletronics_products_view, \
   show_furnitures_products_view, \
   show_golden_clients_view, show_managers_view, \
-  show_manufacturer_view, show_payments_view, \
+  show_manufacturer_view, show_most_manufacturer_product_sold_view, show_most_shipping_made_view, show_payments_view, \
   show_products_by_highest_view, show_products_by_lowest_view, show_products_view, \
-  show_sales_made_with_credit_card_view, \
+  show_sales_by_client_view, show_sales_by_monthly_profit_view, show_sales_made_with_credit_card_view, \
   show_sales_made_with_money_view, \
   show_sales_made_with_pix_view, show_sales_view, \
   show_shipping_company_view
@@ -96,9 +95,11 @@ def main_window(name, e_comerce):
             [
               'Criar Venda',
               'Mostrar Vendas',
+              'Mostrar Vendas de um Cliente',
+              'Mostrar Vendas e Lucro no Mês',
               'Mostrar Vendas com Dinheiro',
               'Mostrar Vendas com Cartão de Crédito',
-              'Mostrar Vendas paga com PIX'
+              'Mostrar Vendas paga com PIX',
             ]
           ],
           [
@@ -119,6 +120,7 @@ def main_window(name, e_comerce):
             [
               'Adicionar Fabricante',
               'Mostrar todos Fabricantes',
+              'Mostrar Fabricantes com maiores vendas',
             ]
           ],
           [
@@ -126,6 +128,7 @@ def main_window(name, e_comerce):
             [
               'Adicionar Transportadora',
               'Mostrar todas Transportadoras',
+              'Mostrar transportadoras com mais transportes feitos',
             ]
           ],
           [
@@ -175,6 +178,7 @@ def main_window(name, e_comerce):
     print(event)
     if event in [sg.WIN_CLOSE_ATTEMPTED_EVENT, 'Sair']:
       break
+    # INÍCIO CARREGAR/SALVAR DADOS.
     if event in ['Salvar arquivo do programa']:
       result: list = []
       result.append(save_e_comerce_config(e_comerce))
@@ -206,6 +210,8 @@ def main_window(name, e_comerce):
           result_window("Erro ao ler os dados de pagamentos")
         else:
           result_window("Sucesso ao carregar os dados!")
+    # FIM CARREGAR/SALVAR DADOS.
+    # INÍCIO CRIAR OBJETOS.
     if event in ['Criar Cliente']:
       result = create_client_view(user_controller)
       if result is None:
@@ -279,6 +285,10 @@ def main_window(name, e_comerce):
       show_managers_view(e_comerce)
     if event in ['Mostrar Vendas']:
       show_sales_view(e_comerce, sale_controller)
+    if event in ['Mostrar Vendas de um Cliente']:
+      show_sales_by_client_view(e_comerce, user_controller)
+    if event in ['Mostrar Vendas e Lucro no Mês']:
+      show_sales_by_monthly_profit_view(e_comerce)
     if event in ['Mostrar Vendas com Dinheiro']:
       show_sales_made_with_money_view(e_comerce, sale_controller)
     if event in ['Mostrar Vendas com Cartão de Crédito']:
@@ -301,10 +311,18 @@ def main_window(name, e_comerce):
       show_products_by_lowest_view(e_comerce.product_list)
     if event in ['Mostrar todos Fabricantes']:
       show_manufacturer_view(e_comerce.manufacturer_list)
+    if event in ['Mostrar Fabricantes com maiores vendas']:
+      show_most_manufacturer_product_sold_view(e_comerce.manufacturer_list, e_comerce.sales_list, sale_controller)
     if event in ['Mostrar todas Transportadoras']:
       show_shipping_company_view(e_comerce.shipping_company_list)
+    if event in ['Mostrar transportadoras com mais transportes feitos']:
+      show_most_shipping_made_view(
+        sale_controller,
+        e_comerce.sales_list,
+        e_comerce.shipping_company_list
+      )
     if event in ['Mostrar todos pagamentos']:
       show_payments_view(payment_controller)
-    # Lógica de criação dos objetos.
-    del result
+    # FIM MOSTRAR INFORMAÇÕES NA GUI.
+    del result # Limpando a memória para n ter N objetos criados diferentes, python gosta de seus ponteiros.
   window.close()

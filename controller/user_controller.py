@@ -88,6 +88,7 @@ class UserController(object):
       manager_dict[m.name] = m
     return manager_dict
 
+
 if __name__ == '__main__':
   print("DEBUG: UserController")
   control = UserController()
@@ -112,5 +113,3 @@ if __name__ == '__main__':
     wage=5534.23,
     pis="ASDASFASF"
   )
-  c.print_obj()
-  m.print_obj()

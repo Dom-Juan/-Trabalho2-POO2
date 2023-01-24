@@ -118,7 +118,7 @@ class Sale(object):
     for i in self.item_sale_list:
       total_to_pay = total_to_pay + i.item_value
     if self.discount_value > 0:
-      total_to_pay = total_to_pay * self.discount_value
+      total_to_pay -= total_to_pay * (self.discount_value/100)
     return total_to_pay - (total_to_pay * 0.03) if self.client.gold_client else total_to_pay
 
   def calc_delivery_date(self, value: int):
